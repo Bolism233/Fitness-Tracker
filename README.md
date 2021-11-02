@@ -2,7 +2,7 @@
 # CS110 Project Proposal
 # Fitness Tracker
 ## CS 110 Final Project
-### Falll, 2021
+### Fall, 2021
 ### [Assignment Description](https://docs.google.com/document/d/1H4R6yLL7som1lglyXWZ04RvTp_RvRFCCBn6sqv-82ps/edit#)
 
 << [https://github.com/<repo>](#) >>
@@ -10,7 +10,7 @@
 << [link to demo presentation slides](#) >>
 
 ### Team: Average Python Enjoyers
-#### << Team Members >>
+#### Salmaan, Lucas, Shijun
 
 ***
 
@@ -55,15 +55,15 @@ The Project is broken down into the following file structure:
 ## Tasks and Responsibilities *(Software Lead)*
 * You must outline the team member roles and who was responsible for each class/method, both individual and collaborative.
 
-### Software Lead - << name >>
+### Software Lead - Salmaan Ejaz
 
 << Worked as integration specialist by... >>
 
-### Front End Specialist - << name >>
+### Front End Specialist - Lucas Carroll
 
 << Front-end lead conducted significant research on... >>
 
-### Back End Specialist - << name >>
+### Back End Specialist - Shijun You
 
 << The back end specialist... >>
 
