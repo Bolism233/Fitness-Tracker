@@ -15,13 +15,19 @@
 ***
 
 ## Project Description *(Software Lead)*
-<< Give an overview of your project >>
+Fitness Tracker App: Enter in your current height, weight, age, desired weight, gender, and activity level. Then the app
+will tell you exactly how healthy you are right now(bmi), how many calories you need to eat and how long you will be 
+eating along with the macronutrient percentages to reach that weight and body fat percentage. 
 
 ***    
 
 ## User Interface Design *(Front End Specialist)*
 * << A wireframe or drawing of the user interface concept along with a short description of the interface. You should have one for each screen in your program. >>
     * For example, if your program has a start screen, game screen, and game over screen, you should include a wireframe / screenshot / drawing of each one and a short description of the components
+    * Main Page GUI
+      ![GUI_Design](assets/mainpage_GUI.jpg)
+    * Result Page GUI
+      ![GUI_Design](assets/resultpage_GUI.jpg)
 * << You should also have a screenshot of each screen for your final GUI >>
 
 ***        
@@ -34,10 +40,17 @@
         * a short description of the module
 * Class Interface Design
     * << A simple drawing that shows the class relationships in your code (see below for an example). >>
-        * ![class diagram](assets/class_diagram.jpg)
+        * Classes for GUI 1 (main page)
+          ![class diagram](assets/mainpage_Classes.jpg)
+    
+        * Classes for GUI 2 (Results page)
+          ![class diagram](assets/resultpage_Classes.jpg)
     * This does not need to be overly detailed, but should show how your code fits into the Model/View/Controller paradigm.
 * Classes
-    * << You should have a list of each of your classes with a description. >>
+    * Classes for GUI 1 Main page: Age, gender, weight, desired_weight, height, activity level. (text boxes that takes inputs)
+    * user(class that saves user preference and current data)
+
+    * Classes for GUI 2 Result Page: Recommendation_Button.
 
 ## Project Structure *(Software Lead)*
 
