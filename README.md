@@ -40,11 +40,9 @@ eating along with the macronutrient percentages to reach that weight and body fa
         * a short description of the module
 * Class Interface Design
     * << A simple drawing that shows the class relationships in your code (see below for an example). >>
-        * Classes for GUI 1 (main page)
+        * Classes for GUI (main page)
           ![class diagram](assets/mainpage_Classes.jpg)
-    
-        * Classes for GUI 2 (Results page)
-          ![class diagram](assets/resultpage_Classes.jpg)
+        
     * This does not need to be overly detailed, but should show how your code fits into the Model/View/Controller paradigm.
 * Classes
     * Classes for GUI 1 Main page: Age, gender, weight, desired_weight, height, activity level. (text boxes that takes inputs)
