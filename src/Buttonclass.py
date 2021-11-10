@@ -1,33 +1,31 @@
 import pygame
 
-screen_width = 800
-screen_height = 500
-btn_image = pygame.image.load("calculateButton2.jpg")
-btn_image= pygame.transform.rotate(pygame.transform.scale(btn_image, (80,50)), 0)
-screen = pygame.display.set_mode((screen_width, screen_height))
 
 class Button:
-    def __init__(self, x, y, image):
-        self.image = image
+    def __init__(self, x, y, image, scale):
+        width = image.get_width()
+        height = image.get_height()
+        self.image = pygame.transform.scale(image, (int(width * scale), int(height) * scale))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
+        self.clicked = False
 
-    def draw(self):
+    def draw(self, surface):
+        action = False
+        #get mouse position
+        pos = pygame.mouse.get_pos()
+
+        # check mouseover and clicked conditions
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.clicked = True
+                action = True
+            if pygame.mouse.get_pressed()[0] == 0:
+                self.clicked = False
+
         #draw button on screen
-        screen.blit(self.image, (self.rect.x, self.rect.y))
+        surface.blit(self.image, (self.rect.x, self.rect.y))
+        return action
 
-start_button = Button(100, 200, btn_image)
-exit_button = Button(450, 200, btn_image)
 
-run = True
-while run:
-    screen.fill((202, 229, 241))
-    start_button.draw()
-    exit_button.draw()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-
-    pygame.display.update()
-pygame.quit()
 
