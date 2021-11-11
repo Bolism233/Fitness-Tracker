@@ -1,31 +1,21 @@
 import pygame
 
 
-class Button:
-    def __init__(self, x, y, image, scale):
-        width = image.get_width()
-        height = image.get_height()
-        self.image = pygame.transform.scale(image, (int(width * scale), int(height) * scale))
+class Button(pygame.sprite.Sprite):
+    def __init__(self, x, y, img_file, scale):
+        pygame.sprite.Sprite.__init__(self)
+        #scale the image
+        self.scale = scale
+        image = pygame.image.load(img_file).convert_alpha()
+        self.width = image.get_width()
+        self.height = image.get_height()
+        self.image = pygame.transform.scale(image, (int(self.width * self.scale), int(self.height) * self.scale))
+        self.scale += 0.1
+        self.scale2 = self.scale - 0.2
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
-        self.clicked = False
 
-    def draw(self, surface):
-        action = False
-        #get mouse position
-        pos = pygame.mouse.get_pos()
-
-        # check mouseover and clicked conditions
-        if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                self.clicked = True
-                action = True
-            if pygame.mouse.get_pressed()[0] == 0:
-                self.clicked = False
-
-        #draw button on screen
-        surface.blit(self.image, (self.rect.x, self.rect.y))
-        return action
-
-
-
+    # def zoomin(self):
+    #     self.image = self.image = pygame.transform.scale(self.image,(int(self.width * self.scale), int(self.height) * self.scale))
+    # def zoomout(self):
+    #     self.image = self.image = pygame.transform.scale(self.image,(int(self.width * self.scale2), int(self.height) * self.scale2))

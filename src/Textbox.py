@@ -1,9 +1,11 @@
 import pygame
 
 
-class Textbox:
-    def __init__(self, user_input, surface, coord):
-        base_font = pygame.font.Font(None, 32)
-        user_text = user_input
-        text_surface = base_font.render(user_text, True, (255,255,255)) #.render text, anti-alias, color
-        surface.blit(text_surface, (0,0))
+class Textbox(pygame.sprite.Sprite):
+    def __init__(self, x, y, user_text = ''):
+        pygame.sprite.Sprite.__init__(self)
+        pygame.font.init()
+        self.x = x
+        self.y = y
+        base_font = pygame.font.Font(None,50)
+        self.text_surface = base_font.render(user_text, True, (0,0,0))
