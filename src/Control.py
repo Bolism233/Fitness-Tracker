@@ -2,6 +2,7 @@ import pygame
 from src.Buttonclass import Button
 from src.Textbox import Textbox
 from src.Text import Text
+from src.Userdata import Userdata
 
 class Controller:
     def __init__(self, width = 900, height = 500):
@@ -92,8 +93,10 @@ class Controller:
                         if textbox.active == True:
                             if event.key == pygame.K_BACKSPACE:
                                 textbox.user_text = textbox.user_text[:-1]
+                                textbox.update()
                             else:
                                 textbox.user_text += event.unicode
+                                textbox.update()
 
             #Set the screen for textinput
             self.screen.fill((202, 229, 241))
@@ -104,9 +107,13 @@ class Controller:
                 self.screen.blit(text.text_surface, (text.x, text.y))
             #rendering textboxes for each
             for textbox in self.textboxes:
-                pygame.draw.rect(self.screen, (0,0,0), textbox.input_rect, 1)
+                if textbox.active == True:
+                    pygame.draw.rect(self.screen, (0,0,0), textbox.input_rect, 1)
+                else:
+                    pygame.draw.rect(self.screen, (255, 255, 255), textbox.input_rect, 1)
                 textbox.text_surface = textbox.base_font.render(textbox.user_text, True, (0, 0, 0))
                 self.screen.blit(textbox.text_surface, (textbox.input_rect.x +5, textbox.input_rect.y + 5))
+
 
 
 
