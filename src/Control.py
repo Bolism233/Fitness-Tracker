@@ -45,7 +45,6 @@ class Controller:
         run = True
 
         while run:
-            self.buttons.draw(self.screen)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -80,7 +79,14 @@ class Controller:
                         for textbox in self.textboxes:
                             textbox.active = False
                         self.textbox6.active = True
-
+                if event.type == pygame.MOUSEMOTION:
+                    for button in self.buttons:
+                        if button.rect.collidepoint(event.pos) and button.status == False:
+                            button.zoomin()
+                            button.status = True
+                        if not button.rect.collidepoint(event.pos) and button.status == True:
+                            button.zoomout()
+                            button.status = False
                 if event.type == pygame.KEYDOWN:
                     for textbox in self.textboxes:
                         if textbox.active == True:
