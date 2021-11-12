@@ -9,7 +9,7 @@ def main():
 	print("Frontend is:" , team["frontend"])
 					#Create an instance on your controller object
     					#Call your mainloop
-	c = Controller(900, 500)
+	c = Controller()
 	c.mainloop()
     ###### NOTHING ELSE SHOULD GO IN main(), JUST THE ABOVE 2 LINES OF CODE ######
 main()

@@ -26,8 +26,6 @@ eating along with the macronutrient percentages to reach that weight and body fa
     * For example, if your program has a start screen, game screen, and game over screen, you should include a wireframe / screenshot / drawing of each one and a short description of the components
     * Main Page GUI
       ![GUI_Design](assets/mainpage_GUI.jpg)
-    * Result Page GUI
-      ![GUI_Design](assets/resultpage_GUI.jpg)
 * << You should also have a screenshot of each screen for your final GUI >>
 
 ***        
