@@ -1,4 +1,5 @@
 import pygame
+import sys
 from src.Buttonclass import Button
 from src.Textbox import Textbox
 from src.Text import Text
@@ -9,14 +10,18 @@ class Controller:
         self.clock = pygame.time.Clock()
         pygame.init()
         pygame.font.init()
+        pygame.key.set_repeat(200, 100)
+        self.state = "Menu"
         #set up colors
-        skyblue = (0, 128, 255)
+        #skyblue = (0, 128, 255)
         black = (0,0,0)
         #Set up screen
-        self.screen = pygame.display.set_mode((width, height))
+        self.width = width
+        self.height = height
+        self.screen = pygame.display.set_mode((self.width, self.height))
+        # self.background = pygame.Surface(self.screen.get_size()).convert()
+        # self.background.fill((202, 229, 241)) What does background do
         pygame.display.set_caption("Fitness Tracker Demo")
-        self.screen.fill((202, 229, 241))
-        self.screen_rect = self.screen.get_rect()
         #set up buttons
         self.start_button = Button (300, 400, "assets/start_btn.png", 0.25)
         self.exit_button = Button (500, 400, "assets/exit_btn.png", 0.25)
@@ -39,22 +44,27 @@ class Controller:
         self.text4 = Text(self.textbox4.x, self.textbox4.y - 30, "Weight")
         self.text5 = Text(self.textbox5.x, self.textbox5.y - 30, "Activity Level")
         self.text6 = Text(self.textbox6.x, self.textbox6.y - 30, "Desired Weight")
-        self.texts = pygame.sprite.Group()
+        self.texts = pygame.sprite.Group() # text sprite group
         self.texts.add(self.text0, self.text1, self.text2, self.text3, self.text4, self.text5, self.text6)
 
-    def mainloop(self):
-        run = True
 
-        while run:
+    def mainloop(self):
+        while True:
+            if self.state == "Menu":
+                self.menuloop()
+            elif self.state == "Calculation":
+                self.calculationloop()
+
+    def menuloop(self):
+        while self.state == "Menu":
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    run = False
+                    sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.start_button.rect.collidepoint(event.pos): #Check if its clicked on the buttons
-                        print("Good")
+                        self.state = "Calculation"
                     elif self.exit_button.rect.collidepoint(event.pos):
-                        print("Bye")
-                        run = False
+                        sys.exit()
                     #textbox selection need to be optimized
                     elif self.textbox1.input_rect.collidepoint(event.pos):
                         for textbox in self.textboxes:
@@ -111,8 +121,9 @@ class Controller:
                     pygame.draw.rect(self.screen, (0,0,0), textbox.input_rect, 1)
                 else:
                     pygame.draw.rect(self.screen, (255, 255, 255), textbox.input_rect, 1)
+                # render user_texts
                 textbox.text_surface = textbox.base_font.render(textbox.user_text, True, (0, 0, 0))
-                self.screen.blit(textbox.text_surface, (textbox.input_rect.x +5, textbox.input_rect.y + 5))
+                self.screen.blit(textbox.text_surface, (textbox.input_rect.x + 5, textbox.input_rect.y + 5))
 
 
 
@@ -121,3 +132,12 @@ class Controller:
             pygame.display.flip()
             self.clock.tick(60)
         pygame.quit()
+
+    def calculationloop(self):
+        while self.state == "Calculation":
+            self.screen = pygame.display.set_mode((self.width, self.height))
+            self.screen.fill((202, 229, 241))
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
