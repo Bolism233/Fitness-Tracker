@@ -1,6 +1,6 @@
 import pygame
 import sys
-from src.Buttonclass import Button
+from src.Button import Button
 from src.Textbox import Textbox
 from src.Text import Text
 from src.Userdata import Userdata
@@ -65,31 +65,10 @@ class Controller:
                         self.state = "Calculation"
                     elif self.exit_button.rect.collidepoint(event.pos):
                         sys.exit()
-                    #textbox selection need to be optimized
-                    elif self.textbox1.input_rect.collidepoint(event.pos):
-                        for textbox in self.textboxes:
-                            textbox.active = False
-                        self.textbox1.active = True
-                    elif self.textbox2.input_rect.collidepoint(event.pos):
-                        for textbox in self.textboxes:
-                            textbox.active = False
-                        self.textbox2.active = True
-                    elif self.textbox3.input_rect.collidepoint(event.pos):
-                        for textbox in self.textboxes:
-                            textbox.active = False
-                        self.textbox3.active = True
-                    elif self.textbox4.input_rect.collidepoint(event.pos):
-                        for textbox in self.textboxes:
-                            textbox.active = False
-                        self.textbox4.active = True
-                    elif self.textbox5.input_rect.collidepoint(event.pos):
-                        for textbox in self.textboxes:
-                            textbox.active = False
-                        self.textbox5.active = True
-                    elif self.textbox6.input_rect.collidepoint(event.pos):
-                        for textbox in self.textboxes:
-                            textbox.active = False
-                        self.textbox6.active = True
+                    for textbox in self.textboxes:
+                        textbox.active = False
+                        if textbox.input_rect.collidepoint(event.pos):
+                            textbox.active = True
                 if event.type == pygame.MOUSEMOTION:
                     for button in self.buttons:
                         if button.rect.collidepoint(event.pos) and button.status == False:

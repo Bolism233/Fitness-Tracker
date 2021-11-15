@@ -3,6 +3,14 @@ import pygame
 
 class Button(pygame.sprite.Sprite):
     def __init__(self, x, y, img_file, scale):
+        """
+        Set up buttons on the screen, scale the image and create rectangles for each, set the default status to False.
+        :param x: x coordinate of the button
+        :param y: y coordinate of the button
+        :param img_file: image file of the button
+        :param scale: scale of the image
+        :return: None
+        """
         pygame.sprite.Sprite.__init__(self)
         #scale the image
         self.x = x
@@ -29,7 +37,7 @@ class Button(pygame.sprite.Sprite):
         self.rect.move_ip(self.x, self.y)
     def zoomout(self):
         """
-        Resize the image of the button to make it the original size
+        Scale the image back to its original size
         args: None
         :return: None
         """
