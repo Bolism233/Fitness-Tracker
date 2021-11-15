@@ -131,13 +131,12 @@ class Controller:
             #update the window at once
             pygame.display.flip()
             self.clock.tick(60)
-        pygame.quit()
 
     def calculationloop(self):
         while self.state == "Calculation":
-            self.screen = pygame.display.set_mode((self.width, self.height))
             self.screen.fill((202, 229, 241))
-            pygame.display.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
+
+            pygame.display.flip()
