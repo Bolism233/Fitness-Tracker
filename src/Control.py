@@ -32,19 +32,19 @@ class Controller:
         num_textboxes = 3
         x = 150
         y = 150
-        second_role_y = 300
+        second_row_y = 300
         for number in range(1, num_textboxes + 1):
             self.textboxes.add(Textbox(x, y, ""))
-            self.textboxes.add(Textbox(x, second_role_y, ""))
+            self.textboxes.add(Textbox(x, second_row_y, ""))
             x += 200
         # Set up texts above the textboxes
         self.texts = pygame.sprite.Group()  # text sprite group
         self.title = Text(width/2 - 100, 50, "Fitness Tracker", black, 28)
         self.texts.add(self.title)
-        categories = ["Age", "Gender", "Height", "Weight", "Acitivty Level", "Desired Weight"]
+        categories = ["Gender", "Weight", "Age", "Activity Level", "Height", "Desired Weight"]
         index = 0
         for textbox in self.textboxes:
-                self.texts.add(Text(textbox.x, textbox.y -30, categories[index]))
+                self.texts.add(Text(textbox.x, textbox.y -35, categories[index]))
                 index += 1
 
 
@@ -61,10 +61,12 @@ class Controller:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    word = {}
+                    str1 = ""
                     if self.start_button.rect.collidepoint(event.pos): #Check if its clicked on the buttons
-                        #for textbox in self.texboxes:
-
+                        for textbox in self.textboxes:
+                            str1 += textbox.user_text + ","
+                            print(str1)
+                        print(dude.gender)
                         self.state = "Calculation"
                     elif self.exit_button.rect.collidepoint(event.pos):
                         sys.exit()
