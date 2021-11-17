@@ -1,7 +1,7 @@
 
 
 class Userdata:
-    def __init__(self, gender, age, weight, height, desired_weight, activity_level, bmi_index = '0', calories = '0'):
+    def __init__(self, gender = '0' , age = '0', weight = '0', height = '0', desired_weight = '0', activity_level = '0', bmi_index = '0', calories = '0'):
         """
         Stores user information inside the user class
         :param gender

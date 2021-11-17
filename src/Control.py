@@ -28,24 +28,24 @@ class Controller:
         self.buttons = pygame.sprite.Group() #button sprite group
         self.buttons.add(self.start_button, self.exit_button)
         #set up textboxes
-        self.textbox1 = Textbox(150, 150, "")
-        self.textbox2 = Textbox(350, 150, "")
-        self.textbox3 = Textbox(550, 150, "")
-        self.textbox4 = Textbox(150, 300, "")
-        self.textbox5 = Textbox(350, 300, "")
-        self.textbox6 = Textbox(550, 300, "")
         self.textboxes = pygame.sprite.Group() # textbox sprite group
-        self.textboxes.add(self.textbox1, self.textbox2, self.textbox3, self.textbox4, self.textbox5, self.textbox6)
+        num_textboxes = 3
+        x = 150
+        y = 150
+        second_role_y = 300
+        for number in range(1, num_textboxes + 1):
+            self.textboxes.add(Textbox(x, y, ""))
+            self.textboxes.add(Textbox(x, second_role_y, ""))
+            x += 200
         # Set up texts above the textboxes
-        self.text0 = Text(width/2 - 100, 50, "Fitness Tracker", black, 28)
-        self.text1 = Text(self.textbox1.x, self.textbox1.y - 30, "Age")
-        self.text2 = Text(self.textbox2.x, self.textbox2.y - 30, "Gender")
-        self.text3 = Text(self.textbox3.x, self.textbox3.y - 30, "Height")
-        self.text4 = Text(self.textbox4.x, self.textbox4.y - 30, "Weight")
-        self.text5 = Text(self.textbox5.x, self.textbox5.y - 30, "Activity Level")
-        self.text6 = Text(self.textbox6.x, self.textbox6.y - 30, "Desired Weight")
-        self.texts = pygame.sprite.Group() # text sprite group
-        self.texts.add(self.text0, self.text1, self.text2, self.text3, self.text4, self.text5, self.text6)
+        self.texts = pygame.sprite.Group()  # text sprite group
+        self.title = Text(width/2 - 100, 50, "Fitness Tracker", black, 28)
+        self.texts.add(self.title)
+        categories = ["Age", "Gender", "Height", "Weight", "Acitivty Level", "Desired Weight"]
+        index = 0
+        for textbox in self.textboxes:
+                self.texts.add(Text(textbox.x, textbox.y -30, categories[index]))
+                index += 1
 
 
     def mainloop(self):
@@ -61,7 +61,10 @@ class Controller:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    word = {}
                     if self.start_button.rect.collidepoint(event.pos): #Check if its clicked on the buttons
+                        #for textbox in self.texboxes:
+
                         self.state = "Calculation"
                     elif self.exit_button.rect.collidepoint(event.pos):
                         sys.exit()
@@ -80,9 +83,11 @@ class Controller:
                 if event.type == pygame.KEYDOWN:
                     for textbox in self.textboxes:
                         if textbox.active == True:
+                            #for deleting userinput
                             if event.key == pygame.K_BACKSPACE:
                                 textbox.user_text = textbox.user_text[:-1]
                                 textbox.update()
+                            # for entering userinput
                             else:
                                 textbox.user_text += event.unicode
                                 textbox.update()
