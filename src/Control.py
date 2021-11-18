@@ -1,5 +1,6 @@
 import pygame
 import sys
+import requests
 from src.Button import Button
 from src.Textbox import Textbox
 from src.Text import Text
@@ -41,12 +42,13 @@ class Controller:
         self.texts = pygame.sprite.Group()  # text sprite group
         self.title = Text(width/2 - 100, 50, "Fitness Tracker", black, 28)
         self.texts.add(self.title)
-        self.categories = ["Gender", "Weight", "Age", "Activity Level", "Height", "Desired Weight"]
+        categories = ["Gender", "Weight(in kg)", "Age", "Activity Level(1-5)", "Height(in cm)", "Desired Weight(in kg)"]
         index = 0
         for textbox in self.textboxes:
-            self.texts.add(Text(textbox.x, textbox.y -35, self.categories[index]))
+            self.texts.add(Text(textbox.x, textbox.y -35, categories[index]))
             index += 1
-        self.dude = Userdata()
+        #set up User object
+        self.user = Userdata()
 
     def mainloop(self):
         while True:
@@ -63,12 +65,13 @@ class Controller:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.start_button.rect.collidepoint(event.pos): #Check if its clicked on the buttons
                         #Save User Data
-                        self.dude.gender = self.textboxes.sprites()[0].user_text
-                        self.dude.age = self.textboxes.sprites()[1].user_text
-                        self.dude.weight = self.textboxes.sprites()[2].user_text
-                        self.dude.height = self.textboxes.sprites()[3].user_text
-                        self.dude.activity_level = self.textboxes.sprites()[4].user_text
-                        self.dude.desired_weight = self.textboxes.sprites()[5].user_text
+                        self.user.gender = self.textboxes.sprites()[0].user_text
+                        self.user.age = self.textboxes.sprites()[2].user_text
+                        self.user.weight = self.textboxes.sprites()[1].user_text
+                        self.user.height = self.textboxes.sprites()[4].user_text
+                        self.user.activity_level = self.textboxes.sprites()[3].user_text
+                        self.user.desired_weight = self.textboxes.sprites()[5].user_text
+                        print(self.user.gender, self.user.age, self.user.height, self.user.weight, self.user.activity_level, self.user.desired_weight)
                         self.state = "Calculation"
                     elif self.exit_button.rect.collidepoint(event.pos):
                         sys.exit()
@@ -113,9 +116,6 @@ class Controller:
                 textbox.text_surface = textbox.base_font.render(textbox.user_text, True, (0, 0, 0))
                 self.screen.blit(textbox.text_surface, (textbox.input_rect.x + 5, textbox.input_rect.y + 5))
 
-
-
-
             #update the window at once
             pygame.display.flip()
             self.clock.tick(60)
@@ -123,8 +123,10 @@ class Controller:
     def calculationloop(self):
         while self.state == "Calculation":
             self.screen.fill((202, 229, 241))
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
 
             pygame.display.flip()
+            self.clock.tick(60)
