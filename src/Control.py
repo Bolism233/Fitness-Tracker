@@ -1,6 +1,6 @@
 import pygame
 import sys
-import requests
+#import requests
 from src.Button import Button
 from src.Textbox import Textbox
 from src.Text import Text
@@ -13,9 +13,7 @@ class Controller:
         pygame.font.init()
         pygame.key.set_repeat(200, 100)
         self.state = "Menu"
-        #set up colors
-        #skyblue = (0, 128, 255)
-        black = (0,0,0)
+        
         #Set up screen
         self.width = width
         self.height = height
@@ -23,11 +21,15 @@ class Controller:
         # self.background = pygame.Surface(self.screen.get_size()).convert()
         # self.background.fill((202, 229, 241)) What does background do
         pygame.display.set_caption("Fitness Tracker Demo")
+        
         #set up buttons
-        self.start_button = Button (300, 400, "assets/start_btn.png", 0.25)
-        self.exit_button = Button (500, 400, "assets/exit_btn.png", 0.25)
+        #self.start_button = Button(300, 400, "assets/start_btn.png", 0.25)
+        #self.exit_button = Button(500, 400, "assets/exit_btn.png", 0.25)
+        self.start_button = Button(self.width/3, 400, "assets/start_btn.png", 0.25)
+        self.exit_button = Button(2*self.width/3, 400, "assets/exit_btn.png", 0.25)
         self.buttons = pygame.sprite.Group() #button sprite group
         self.buttons.add(self.start_button, self.exit_button)
+        
         #set up textboxes
         self.textboxes = pygame.sprite.Group() # textbox sprite group
         num_textboxes = 3
@@ -38,15 +40,17 @@ class Controller:
             self.textboxes.add(Textbox(x, y, ""))
             self.textboxes.add(Textbox(x, second_row_y, ""))
             x += 200
-        # Set up texts above the textboxes
+        
+        # Set up text above the textboxes
         self.texts = pygame.sprite.Group()  # text sprite group
-        self.title = Text(width/2 - 100, 50, "Fitness Tracker", black, 28)
+        self.title = Text(width/2 - 100, 50, "Fitness Tracker", (0,0,0), 28)
         self.texts.add(self.title)
-        categories = ["Gender", "Weight(in kg)", "Age", "Activity Level(1-5)", "Height(in cm)", "Desired Weight(in kg)"]
+        categories = ["Gender", "Weight (in kg)", "Age", "Activity Level (1-5)", "Height (in cm)", "Desired Weight (in kg)"]
         index = 0
         for textbox in self.textboxes:
             self.texts.add(Text(textbox.x, textbox.y -35, categories[index]))
             index += 1
+        
         #set up User object
         self.user = Userdata()
 
@@ -82,10 +86,10 @@ class Controller:
                 if event.type == pygame.MOUSEMOTION:
                     for button in self.buttons:
                         if button.rect.collidepoint(event.pos) and button.status == False:
-                            button.zoomin()
+                            button.zoomIn()
                             button.status = True
                         if not button.rect.collidepoint(event.pos) and button.status == True:
-                            button.zoomout()
+                            button.zoomOut()
                             button.status = False
                 if event.type == pygame.KEYDOWN:
                     for textbox in self.textboxes:
@@ -100,18 +104,20 @@ class Controller:
                                 textbox.update()
 
             #Set the screen for textinput
-            self.screen.fill((202, 229, 241))
+            self.screen.fill((255, 255, 255))
             #drawing buttons
             self.buttons.draw(self.screen)
+            
             #rendering texts above the textboxes
             for text in self.texts:
                 self.screen.blit(text.text_surface, (text.x, text.y))
+            
             #rendering textboxes for each
             for textbox in self.textboxes:
                 if textbox.active == True:
-                    pygame.draw.rect(self.screen, (0,0,0), textbox.input_rect, 1)
+                    pygame.draw.rect(self.screen, (51,153,255), textbox.input_rect, 1)
                 else:
-                    pygame.draw.rect(self.screen, (255, 255, 255), textbox.input_rect, 1)
+                    pygame.draw.rect(self.screen, (0,0,0), textbox.input_rect, 1)
                 # render user_texts
                 textbox.text_surface = textbox.base_font.render(textbox.user_text, True, (0, 0, 0))
                 self.screen.blit(textbox.text_surface, (textbox.input_rect.x + 5, textbox.input_rect.y + 5))

@@ -1,6 +1,5 @@
 import pygame
 
-
 class Button(pygame.sprite.Sprite):
     def __init__(self, x, y, img_file, scale):
         """
@@ -22,10 +21,10 @@ class Button(pygame.sprite.Sprite):
         self.originimage = pygame.transform.scale(image, (int(self.width * self.scale), int(self.height) * self.scale))
         self.image = self.originimage
         self.rect = self.image.get_rect()
-        self.rect.topleft = (x,y)
+        self.rect.topleft = (self.x,self.y)
         self.status = False
 
-    def zoomin(self):
+    def zoomIn(self):
         """
         Resize the image of the button to make it bigger
         args: None
@@ -35,7 +34,8 @@ class Button(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.originimage,(int(self.width * self.scale), int(self.height) * self.scale))
         self.rect = self.image.get_rect()
         self.rect.move_ip(self.x, self.y)
-    def zoomout(self):
+
+    def zoomOut(self):
         """
         Scale the image back to its original size
         args: None

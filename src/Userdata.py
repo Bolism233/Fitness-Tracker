@@ -1,5 +1,3 @@
-
-
 class Userdata:
     def __init__(self, gender = '0' , age = '0', weight = '0', height = '0', desired_weight = '0', activity_level = '0', bmi_index = '0', calories = '0'):
         """
@@ -22,5 +20,3 @@ class Userdata:
         self.desired_weight = desired_weight
         self.bmi = bmi_index
         self.calories = calories
-
-

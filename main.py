@@ -1,8 +1,6 @@
-import pygame
 from src.Control import Controller #import your controller
 
 def main():
-	pygame.init()
 	team = {"lead": "Salmaan", "backend": "Shijun(Jay)", "frontend": "Lucas"}
 	print("Software Lead is:", team["lead"])
 	print("Backend is:", team["backend"])
@@ -13,4 +11,3 @@ def main():
 	c.mainloop()
     ###### NOTHING ELSE SHOULD GO IN main(), JUST THE ABOVE 2 LINES OF CODE ######
 main()
-
