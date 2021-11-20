@@ -21,7 +21,7 @@ class Button(pygame.sprite.Sprite):
         self.originimage = pygame.transform.scale(image, (int(self.width * self.scale), int(self.height) * self.scale))
         self.image = self.originimage
         self.rect = self.image.get_rect()
-        self.rect.topleft = (self.x,self.y)
+        self.rect.topleft = (self.x, self.y)
         self.status = False
 
     def zoomIn(self):
