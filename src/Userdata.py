@@ -16,8 +16,7 @@ class Userdata:
         self.weight = weight
         self.activity_level = activity_level
         self.desired_weight = desired_weight
-        self.bmi = bmi_index
-        self.calories = calories
+
 
     def bmi(self, bmi_index):
         """
