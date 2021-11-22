@@ -97,11 +97,11 @@ class Controller:
                             #for deleting userinput
                             if event.key == pygame.K_BACKSPACE:
                                 textbox.user_text = textbox.user_text[:-1]
-                                textbox.update()
+                                textbox.setDefaultLen()
                             # for entering userinput
                             else:
                                 textbox.user_text += event.unicode
-                                textbox.update()
+                                textbox.setDefaultLen()
 
             #Set the screen for textinput
             self.screen.fill((255, 255, 255))
@@ -132,6 +132,12 @@ class Controller:
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    #write Userdata into the json file
+                    writer = open("src/data.json", "w")
+                    #example
+                    new_text = "Hello World"
+                    writer.write(new_text)
+                    #for result in User data, write it into the data.son
                     sys.exit()
 
             pygame.display.flip()

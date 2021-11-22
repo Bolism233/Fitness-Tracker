@@ -1,5 +1,6 @@
 import requests
 import json
+
 url = "https://fitness-calculator.p.rapidapi.com/bmi"
 querystring = {"age":"19","weight":"65","height":"180"}
 headers = {

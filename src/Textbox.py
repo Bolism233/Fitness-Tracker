@@ -22,7 +22,7 @@ class Textbox(pygame.sprite.Sprite):
         self.input_rect = pygame.Rect(self.x, self.y, 140, 32)
         self.active = False # whether it is clicked on or not.
 
-    def update(self):
+    def setDefaultLen(self):
         """
         set the default length of the texboxes
         args: None

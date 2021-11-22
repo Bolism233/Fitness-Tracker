@@ -36,17 +36,17 @@ eating along with the macronutrient percentages to reach that weight and body fa
     * For each additional module you should include
         * url for the module documentation
         * a short description of the module
+        * requests https://docs.python-requests.org/en/latest/ Requests allows you to send HTTP/1.1 requests extremely easily
+        * sys https://docs.python.org/3/library/sys.html This module provides access to some variables used or maintained 
+      by the interpreter and to functions that interact strongly with the interpreter.
 * Class Interface Design
     * << A simple drawing that shows the class relationships in your code (see below for an example). >>
         * Classes for GUI (main page)
-          ![class diagram](assets/mainpage_Classes.jpg)
+          ![class diagram](assets/classes.jpg)
         
     * This does not need to be overly detailed, but should show how your code fits into the Model/View/Controller paradigm.
 * Classes
-    * Classes for GUI 1 Main page: Age, gender, weight, desired_weight, height, activity level. (text boxes that takes inputs)
-    * user(class that saves user preference and current data)
-
-    * Classes for GUI 2 Result Page: Recommendation_Button.
+    * Classes: Textboxes, Buttons, Texts, Userdata
 
 ## Project Structure *(Software Lead)*
 
