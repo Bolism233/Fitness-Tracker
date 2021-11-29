@@ -12,12 +12,12 @@ class Button(pygame.sprite.Sprite):
         """
         pygame.sprite.Sprite.__init__(self)
         #scale the image
-        self.x = x
-        self.y = y
         self.scale = scale
         image = pygame.image.load(img_file).convert_alpha()
         self.width = image.get_width()
         self.height = image.get_height()
+        self.x = x
+        self.y = y
         self.originimage = pygame.transform.scale(image, (int(self.width * self.scale), int(self.height) * self.scale))
         self.image = self.originimage
         self.rect = self.image.get_rect()
