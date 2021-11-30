@@ -28,6 +28,7 @@ class Controller:
         
         #set up buttons
         self.start_button = Button(580, 400, "assets/start_btn.png", 0.25)
+        self.back_button = Button(((253+580)/2)-5,400, "assets/start_btn.png", 0.25)
         self.exit_button = Button(253, 400, "assets/exit_btn.png", 0.25)
         self.buttons = pygame.sprite.Group() #button sprite group
         self.buttons.add(self.start_button, self.exit_button)
@@ -47,7 +48,7 @@ class Controller:
         self.texts = pygame.sprite.Group()  # text sprite group
         self.title = Text(375, 50, "Fitness Tracker", (0,0,0), 28)
         self.texts.add(self.title)
-        categories = ["Gender", "Weight (in kg)", "Age", "Activity Level (1-5)", "Height (in cm)", "Desired Weight (in kg)"]
+        categories = ["Gender", "Weight (in kg)", "Age", "Activity Level (1-6)", "Height (in cm)", "Desired Weight (in kg)"]
         index = 0
         for textbox in self.textboxes:
             self.texts.add(Text(textbox.x, textbox.y -35, categories[index]))
@@ -75,6 +76,7 @@ class Controller:
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.start_button.rect.collidepoint(event.pos):
+                        self.start_button.zoomOut()
                         self.state = "Menu"
 
                     elif self.exit_button.rect.collidepoint(event.pos):
@@ -92,6 +94,7 @@ class Controller:
             #Set the screen for textinput
             self.screen.fill((255, 255, 255))
             #drawing buttons
+            self.buttons.remove(self.back_button)
             self.buttons.draw(self.screen)
             self.start_title=Text(320,200,"Fitness Calculator",font_size=40)
             self.screen.blit(self.start_title.text_surface, (self.start_title.x, self.start_title.y))
@@ -116,8 +119,14 @@ class Controller:
                         self.user.height = self.textboxes.sprites()[4].user_text
                         self.user.activity_level = f'level_{self.textboxes.sprites()[3].user_text}'
                         self.user.desired_weight = self.textboxes.sprites()[5].user_text
-                        
+                        self.start_button.zoomOut()
                         self.state = "Calculation"
+
+                    elif self.back_button.rect.collidepoint(event.pos):
+                        self.back_button.zoomOut()
+                        self.state = "Start"
+                        # self.buttons.empty()
+                        # self.buttons.remove(self.back_button)
 
                     elif self.exit_button.rect.collidepoint(event.pos):
                         sys.exit()
@@ -151,6 +160,7 @@ class Controller:
             #Set the screen for textinput
             self.screen.fill((255, 255, 255))
             #drawing buttons
+            self.buttons.add(self.back_button)
             self.buttons.draw(self.screen)
             
             #rendering texts above the textboxes
@@ -176,14 +186,49 @@ class Controller:
         while self.state == "Calculation":
 
             for event in pygame.event.get():
+
                 if event.type == pygame.QUIT:
-                    #write Userdata into the json file
-                    writer = open("src/data.json", "w")
-                    #example
-                    new_text = "Hello World"
-                    writer.write(new_text)
-                    #for result in User data, write it into the data.son
+                    # #write Userdata into the json file
+                    # writer = open("src/data.json", "w")
+                    # #example
+                    # new_text = "Hello World"
+                    # writer.write(new_text)
+                    # #for result in User data, write it into the data.son
                     sys.exit()
+
+                # if event.type == pygame.MOUSEBUTTONDOWN:
+                #     # if self.start_button.rect.collidepoint(event.pos): #Check if its clicked on the buttons
+                #     #     #Save User Data
+                #     #     self.user.gender = self.textboxes.sprites()[0].user_text
+                #     #     self.user.age = self.textboxes.sprites()[2].user_text
+                #     #     self.user.weight = self.textboxes.sprites()[1].user_text
+                #     #     self.user.height = self.textboxes.sprites()[4].user_text
+                #     #     self.user.activity_level = f'level_{self.textboxes.sprites()[3].user_text}'
+                #     #     self.user.desired_weight = self.textboxes.sprites()[5].user_text
+                        
+                #     #     self.state = "Calculation"
+
+                #     if self.back_button.rect.collidepoint(event.pos):
+                #         self.state = "Calculation"
+                #         # self.buttons.empty()
+                #         # self.buttons.remove(self.back_button)
+
+                #     elif self.exit_button.rect.collidepoint(event.pos):
+                #         sys.exit()
+
+                #     for textbox in self.textboxes:
+                #         textbox.active = False
+                #         if textbox.input_rect.collidepoint(event.pos):
+                #             textbox.active = True
+
+                # if event.type == pygame.MOUSEMOTION:
+                #     for button in self.buttons:
+                #         if button.rect.collidepoint(event.pos) and button.status == False:
+                #             button.zoomIn()
+                #             button.status = True
+                #         if not button.rect.collidepoint(event.pos) and button.status == True:
+                #             button.zoomOut()
+                #             button.status = False
 
             crnt_bmi = self.user.bmi(self.user.weight,'BMI')
             dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
@@ -212,6 +257,7 @@ class Controller:
             self.screen.fill((255, 255, 255))
             for text in self.calctexts:
                 self.screen.blit(text.text_surface, (text.x, text.y))
+            # self.buttons.draw(self.screen)
             
             pygame.display.flip()
             self.clock.tick(60)
