@@ -1,6 +1,5 @@
 import pygame
 import sys
-# from src.Api import Api
 #import requests
 from src.Button import Button
 from src.Textbox import Textbox
@@ -80,15 +79,6 @@ class Controller:
                         self.user.activity_level = f'level_{self.textboxes.sprites()[3].user_text}'
                         self.user.desired_weight = self.textboxes.sprites()[5].user_text
                         
-                        # self.userdata = {
-                        #     'gender':str(self.user.gender).lower(),
-                        #     'age':self.user.age,
-                        #     'weight':self.user.weight,
-                        #     'height':self.user.height,
-                        #     'activity_level':f'level_{self.user.activity_level}',
-                        #     'desired_weight':self.user.desired_weight
-                        # }
-                        #print(self.userdata)
                         self.state = "Calculation"
 
                     elif self.exit_button.rect.collidepoint(event.pos):
@@ -156,27 +146,10 @@ class Controller:
                     #for result in User data, write it into the data.son
                     sys.exit()
 
-            # crnt_bmi = Userdata().bmi('BMI')
-            # dsrd_bmi = Userdata().bmi('Desired BMI')
-            # calory_maintain = Userdata().calories(5)
-
-            # crnt_bmi = Userdata().bmi(self.userdata['age'],self.userdata['weight'],self.userdata['height'],'BMI')
-            # dsrd_bmi = Userdata().bmi(self.userdata['age'],self.userdata['desired_weight'],self.userdata['height'],'Desired BMI')
-            # calory_maintain = Userdata().calories(self.userdata['age'],self.userdata['gender'],self.userdata['height'],self.userdata['weight'],self.userdata['activity_level'],5)
-
-            # crnt_bmi = Api().bmi(self.userdata['age'],self.userdata['weight'],self.userdata['height'],'BMI')
-            # dsrd_bmi = Api().bmi(self.userdata['age'],self.userdata['desired_weight'],self.userdata['height'],'Desired BMI')
-            # calory_maintain = Api().calories(self.userdata['age'],self.userdata['gender'],self.userdata['height'],self.userdata['weight'],self.userdata['activity_level'],5)
-
-            # crnt_bmi = Api().bmi('BMI')
-            # dsrd_bmi = Api().bmi('Desired BMI')
-            # calory_maintain = Api().calories(self.userdata['age'],self.userdata['gender'],self.userdata['height'],self.userdata['weight'],self.userdata['activity_level'],5)
-
             crnt_bmi = self.user.bmi(self.user.weight,'BMI')
             dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
             calory_maintain = self.user.calories(5)
-            #calory_maintain = Api().calories(self.userdata['age'],self.userdata['gender'],self.userdata['height'],self.userdata['weight'],self.userdata['activity_level'],5)
-
+            
             if crnt_bmi < 18.5:
                 weight_status = 'underweight.'
             elif 18.5 <= crnt_bmi < 25:
