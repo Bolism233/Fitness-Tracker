@@ -1,35 +1,146 @@
+from typing import MutableMapping
+import requests
+import json
+from requests.models import Response
+
 class Userdata:
-    def __init__(self, gender = '0' , age = '0', weight = '0', height = '0', desired_weight = '0', activity_level = '0'):
+
+
+    def __init__(self,age=0,weight=0,height=0,gender='',activity_level=0,desired_weight=0):
         """
         Stores user information inside the user class
-        :param gender
-        :param age
-        :param weight
-        :param height
-        :param desired_weight
-        :param activity_level
-        .:return: None
+        param gender
+        param age
+        param weight
+        param height
+        param desired_weight
+        param activity_level
+        return: None
         """
-        self.gender = gender
+
         self.age = age
-        self.height = height
         self.weight = weight
+        self.height = height
+        self.gender = gender
         self.activity_level = activity_level
         self.desired_weight = desired_weight
 
+    
+    #def bmi(self, age, weight, height, filename):
+    def bmi(self,weight,filename):
+        '''
+        Finds user's BMI and desired BMI
+        param age: age
+        param weight: weight
+        param height: height
+        param filename: name of json file that BMI info will be stored in
+        return: user's BMI
+        '''
 
-    def bmi(self, bmi_index):
-        """
-        Stores user object's bmi number
-        :param bmi_index:
-        :return: None
-        """
-        self.bmi = bmi_index
+        self.url = "https://fitness-calculator.p.rapidapi.com/bmi"
+        self.headers = {
+            'x-rapidapi-host': "fitness-calculator.p.rapidapi.com",
+            'x-rapidapi-key': "b00889a22bmsh3979cb9bd3fcb8dp1b279fjsn69211ab78ad7"
+        }
+        
+        # self.age = age
+        # self.weight = weight
+        # self.height = height
+        self.filename = filename
+        self.querystring = {
+            "age":self.age,
+            "weight":weight,
+            "height":self.height
+            }
+        
+        response = requests.get(self.url, headers=self.headers, params=self.querystring)
+        out_file = open(f'src/{self.filename}.json', 'w')
+        json.dump(response.json(), out_file, indent=4)
+        res = json.loads(response.text)
+        return res['data']['bmi']
 
-    def calorie(self, calories):
-        """
-        Stores user object's calorie
-        :param calories:
-        :return:
-        """
-        self.calorie = calories
+
+    #def calories(self,age,gender,height,weight,activity_level,loss,filename = 'Calories'):
+    def calories(self,loss,filename = 'Calories'):
+        '''
+        Determines how many calories the user should intake daily in order to gain, lose, or maintain weight based on activity level
+        '''
+
+        self.url = "https://fitness-calculator.p.rapidapi.com/dailycalorie"
+        self.headers = {
+            'x-rapidapi-host': "fitness-calculator.p.rapidapi.com",
+            'x-rapidapi-key': "0f022dc93emsh5eb4b83a47b9176p165de5jsn277741953564"
+            }
+
+        # self.age = age
+        # self.gender = gender
+        # self.height = height
+        # self.weight = weight
+        # self.activity_level = activity_level
+        self.filename = filename
+        self.querystring = {"age":self.age,"gender":self.gender,"height":self.height,"weight":self.weight,"activitylevel":self.activity_level}
+
+        response = requests.get(self.url, headers=self.headers, params=self.querystring)
+        out_file = open(f'src/{self.filename}.json', 'w')
+        json.dump(response.json(), out_file, indent=4)
+        res = json.loads(response.text)
+        goals = res['data']['goals']
+        primary_goal = [goals['maintain weight'], goals['Extreme weight loss']['calory'], goals['Weight loss']['calory'], goals['Mild weight loss']['calory'], goals['Mild weight gain']['calory'], goals['Weight gain']['calory'], goals['Extreme weight gain']['calory']]
+        return primary_goal[0], primary_goal[loss]
+
+
+# userdata = Userdata()
+
+# userdata.age = 18
+# userdata.weight = 60
+# userdata.height = 180
+# userdata.gender = 'male'
+# userdata.activity_level = 'level_2'
+
+# #userdata.bmi('test')
+# userdata.calories(5)
+
+
+
+
+
+
+
+
+
+
+
+#
+    # def __init__(self, gender = '0' , age = '0', weight = '0', height = '0', desired_weight = '0', activity_level = '0'):
+    #     """
+    #     Stores user information inside the user class
+    #     param gender
+    #     param age
+    #     param weight
+    #     param height
+    #     param desired_weight
+    #     param activity_level
+    #     return: None
+    #     """
+    #     self.gender = gender
+    #     self.age = age
+    #     self.height = height
+    #     self.weight = weight
+    #     self.activity_level = activity_level
+    #     self.desired_weight = desired_weight
+
+    # def bmi(self, bmi_index):
+    #     """
+    #     Stores user object's bmi number
+    #     param bmi_index:
+    #     return: None
+    #     """
+    #     self.bmi = bmi_index
+
+    # def calories(self, calories):
+    #     """
+    #     Stores user object's calorie
+    #     param calories:
+    #     return:
+    #     """
+    #     self.calorie = calories
