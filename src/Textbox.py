@@ -1,6 +1,8 @@
 import pygame
 
 class Textbox(pygame.sprite.Sprite):
+
+
     def __init__(self, x, y, user_text = ''):
         """
         Set up textboxes, set up the font and rendering process of the user text. Set its default active status to False.
@@ -21,6 +23,7 @@ class Textbox(pygame.sprite.Sprite):
         self.text_surface = self.base_font.render(self.user_text, True, self.white)
         self.input_rect = pygame.Rect(self.x, self.y, 140, 32)
         self.active = False # whether it is clicked on or not.
+
 
     def setDefaultLen(self):
         """
