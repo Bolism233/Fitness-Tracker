@@ -1,7 +1,5 @@
-from typing import MutableMapping
 import requests
 import json
-from requests.models import Response
 
 class Userdata:
 
@@ -81,38 +79,39 @@ class Userdata:
         json.dump(response.json(), out_file, indent=4)
         res = json.loads(response.text)
         goals = res['data']['goals']
-        primary_goal = [goals['maintain weight'], goals['Extreme weight loss']['calory'], goals['Weight loss']['calory'], goals['Mild weight loss']['calory'], goals['Mild weight gain']['calory'], goals['Weight gain']['calory'], goals['Extreme weight gain']['calory']]
+        
+        primary_goal = \
+            [goals['maintain weight'], goals['Extreme weight loss']['calory'], \
+                goals['Weight loss']['calory'], goals['Mild weight loss']['calory'], \
+                    goals['Mild weight gain']['calory'], goals['Weight gain']['calory'], \
+                        goals['Extreme weight gain']['calory']]
+
         return primary_goal[0], primary_goal[loss]
 
-    # def macronutrients(self,filename):
-    #     '''
+
+    def macronutrients(self,filename):
+        '''
         
-    #     '''
-    #     self.url = "https://fitness-calculator.p.rapidapi.com/macrocalculator"
-    #     self.headers = {
-    #         'x-rapidapi-host': "fitness-calculator.p.rapidapi.com",
-    #         'x-rapidapi-key': "0f022dc93emsh5eb4b83a47b9176p165de5jsn277741953564"
-    #         }
+        '''
+        self.url = "https://fitness-calculator.p.rapidapi.com/macrocalculator"
+        self.headers = {
+            'x-rapidapi-host': "fitness-calculator.p.rapidapi.com",
+            'x-rapidapi-key': "0f022dc93emsh5eb4b83a47b9176p165de5jsn277741953564"
+            }
 
-    #     self.filename = filename
-    #     self.querystring = {
-    #         "age":"25",
-    #         "gender":"male",
-    #         "height":"180",
-    #         "weight":"70",
-    #         "activitylevel":"5",
-    #         "goal":"extremelose"
-    #         }
-    #     self.querystring = {
-    #         "age":self.age,
-    #         "gender":self.gender,
-    #         "height":self.height,
-    #         "weight":self.weight,
-    #         "activitylevel":self.activity_level,
-    #         "goal":self.goal
-    #     }
+        self.filename = filename
+        self.querystring = {
+            "age":self.age,
+            "gender":self.gender,
+            "height":self.height,
+            "weight":self.weight,
+            "activitylevel":self.activity_level,
+            "goal":self.goal
+        }
 
-    #     response = requests.request("GET", url, headers=headers, params=querystring)
-
-    #     print(response.text)
-        
+        response = requests.get(self.url, headers=self.headers, params=self.querystring)
+        out_file = open(f'src/{self.filename}.json', 'w')
+        json.dump(response.json(), out_file, indent=4)
+        res = json.loads(response.text)
+        goals = res['data']
+        return goals

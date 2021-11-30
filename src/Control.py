@@ -59,22 +59,30 @@ class Controller:
 
 
     def mainloop(self):
+
         while True:
+
             if self.state == "Start":
                 self.startloop()
+
             elif self.state == "Menu":
                 self.menuloop()
+
             elif self.state == "Calculation":
                 self.calculationloop()
 
 
     def startloop(self):
+
         while self.state == "Start":
+
             for event in pygame.event.get():
+
                 if event.type == pygame.QUIT:
                     sys.exit()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
+
                     if self.start_button.rect.collidepoint(event.pos):
                         self.start_button.zoomOut()
                         self.state = "Menu"
@@ -83,16 +91,20 @@ class Controller:
                         sys.exit()
 
                 if event.type == pygame.MOUSEMOTION:
+
                     for button in self.buttons:
+
                         if button.rect.collidepoint(event.pos) and button.status == False:
                             button.zoomIn()
                             button.status = True
+
                         if not button.rect.collidepoint(event.pos) and button.status == True:
                             button.zoomOut()
                             button.status = False
 
             #Set the screen for textinput
             self.screen.fill((255, 255, 255))
+
             #drawing buttons
             self.buttons.remove(self.back_button)
             self.buttons.draw(self.screen)
@@ -105,12 +117,16 @@ class Controller:
 
 
     def menuloop(self):
+
         while self.state == "Menu":
+
             for event in pygame.event.get():
+                
                 if event.type == pygame.QUIT:
                     sys.exit()
                     
                 if event.type == pygame.MOUSEBUTTONDOWN:
+
                     if self.start_button.rect.collidepoint(event.pos): #Check if its clicked on the buttons
                         #Save User Data
                         self.user.gender = self.textboxes.sprites()[0].user_text
@@ -125,8 +141,6 @@ class Controller:
                     elif self.back_button.rect.collidepoint(event.pos):
                         self.back_button.zoomOut()
                         self.state = "Start"
-                        # self.buttons.empty()
-                        # self.buttons.remove(self.back_button)
 
                     elif self.exit_button.rect.collidepoint(event.pos):
                         sys.exit()
@@ -137,23 +151,28 @@ class Controller:
                             textbox.active = True
 
                 if event.type == pygame.MOUSEMOTION:
+
                     for button in self.buttons:
+
                         if button.rect.collidepoint(event.pos) and button.status == False:
                             button.zoomIn()
                             button.status = True
+
                         if not button.rect.collidepoint(event.pos) and button.status == True:
                             button.zoomOut()
                             button.status = False
 
                 if event.type == pygame.KEYDOWN:
+
                     for textbox in self.textboxes:
+
                         if textbox.active == True:
-                            #for deleting userinput
-                            if event.key == pygame.K_BACKSPACE:
+
+                            if event.key == pygame.K_BACKSPACE:      #for deleting userinput
                                 textbox.user_text = textbox.user_text[:-1]
                                 textbox.setDefaultLen()
-                            # for entering userinput
-                            else:
+
+                            else:              #for entering userinput
                                 textbox.user_text += event.unicode
                                 textbox.setDefaultLen()
 
@@ -169,10 +188,12 @@ class Controller:
             
             #rendering textboxes for each
             for textbox in self.textboxes:
+
                 if textbox.active == True:
                     pygame.draw.rect(self.screen, (51,153,255), textbox.input_rect, 1)
                 else:
                     pygame.draw.rect(self.screen, (0,0,0), textbox.input_rect, 1)
+
                 # render user_texts
                 textbox.text_surface = textbox.base_font.render(textbox.user_text, True, (0, 0, 0))
                 self.screen.blit(textbox.text_surface, (textbox.input_rect.x + 5, textbox.input_rect.y + 5))
@@ -183,6 +204,7 @@ class Controller:
 
 
     def calculationloop(self):
+
         while self.state == "Calculation":
 
             for event in pygame.event.get():
@@ -257,7 +279,6 @@ class Controller:
             self.screen.fill((255, 255, 255))
             for text in self.calctexts:
                 self.screen.blit(text.text_surface, (text.x, text.y))
-            # self.buttons.draw(self.screen)
             
             pygame.display.flip()
             self.clock.tick(60)
