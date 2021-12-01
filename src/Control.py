@@ -25,6 +25,12 @@ class Controller:
         self.height = height
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Fitness Tracker")
+
+        #set up start screen text
+        self.start_title = Text(320,200,"Fitness Calculator",font_size=40)
+        self.start_subtitle = Text(350,240,"By Jay, Lucas, and Sal",font_size=25)
+        self.titletext = pygame.sprite.Group()
+        self.titletext.add(self.start_title, self.start_subtitle)
         
         #set up buttons
         self.start_button = Button(580, 400, "assets/start_btn.png", 0.25)
@@ -37,21 +43,22 @@ class Controller:
         self.textboxes = pygame.sprite.Group() # textbox sprite group
         num_textboxes = 3
         x = 175
-        y = 150
-        second_row_y = 300
+        y = 125
+        second_row_y = y + 100
         for number in range(1, num_textboxes + 1):
-            self.textboxes.add(Textbox(x, y, ""))
-            self.textboxes.add(Textbox(x, second_row_y, ""))
+            self.textboxes.add(Textbox(x, y))
+            self.textboxes.add(Textbox(x, second_row_y))
             x += 200
+        self.textboxes.add(Textbox(175,y+200))
         
         #set up text above textboxes
         self.texts = pygame.sprite.Group()  # text sprite group
-        self.title = Text(375, 50, "Fitness Tracker", (0,0,0), 28)
-        self.texts.add(self.title)
-        categories = ["Gender", "Weight (in kg)", "Age", "Activity Level (1-6)", "Height (in cm)", "Desired Weight (in kg)"]
+        #self.title = Text(375, 50, "Fitness Tracker", (0,0,0), 28)
+        #self.texts.add(self.title)
+        categories = ["Gender", "Height (in cm)", "Age", "Weight (in kg)", "Activity Level (1-6)", "Desired Weight (in kg)","Intensity (1-3)"]
         index = 0
         for textbox in self.textboxes:
-            self.texts.add(Text(textbox.x, textbox.y -35, categories[index]))
+            self.texts.add(Text(textbox.x, textbox.y - 25, categories[index]))
             index += 1
 
         #set up text for calculation screen
@@ -105,11 +112,13 @@ class Controller:
             #Set the screen for textinput
             self.screen.fill((255, 255, 255))
 
-            #drawing buttons
+            #drawing buttons/text
             self.buttons.remove(self.back_button)
             self.buttons.draw(self.screen)
-            self.start_title=Text(320,200,"Fitness Calculator",font_size=40)
-            self.screen.blit(self.start_title.text_surface, (self.start_title.x, self.start_title.y))
+            # self.start_title=Text(320,200,"Fitness Calculator",font_size=40)
+            # self.start_subtitle=Text(300,240,"By Jay, Lucas, and Sal",font_size=20)
+            for text in self.titletext:
+                self.screen.blit(text.text_surface, (text.x, text.y))
 
             #update the window at once
             pygame.display.flip()
@@ -130,10 +139,10 @@ class Controller:
                     if self.start_button.rect.collidepoint(event.pos): #Check if its clicked on the buttons
                         #Save User Data
                         self.user.gender = self.textboxes.sprites()[0].user_text
+                        self.user.weight = self.textboxes.sprites()[3].user_text
                         self.user.age = self.textboxes.sprites()[2].user_text
-                        self.user.weight = self.textboxes.sprites()[1].user_text
-                        self.user.height = self.textboxes.sprites()[4].user_text
-                        self.user.activity_level = f'level_{self.textboxes.sprites()[3].user_text}'
+                        self.user.activity_level = f'level_{self.textboxes.sprites()[4].user_text}'
+                        self.user.height = self.textboxes.sprites()[1].user_text
                         self.user.desired_weight = self.textboxes.sprites()[5].user_text
                         self.start_button.zoomOut()
                         self.state = "Calculation"
@@ -259,19 +268,22 @@ class Controller:
             if crnt_bmi < 18.5:
                 weight_status = 'underweight.'
             elif 18.5 <= crnt_bmi < 25:
-                weight_status = 'healthy. Nice job!'
+                weight_status = 'healthy.'
             elif 25 <= crnt_bmi:
                 weight_status = 'overweight.'
 
-            # if DESIRED_BMI < 18.5:
-            #     desired_weight_status = 'underweight.'
-            # elif 18.5 <= BMI < 25:
-            #     desired_weight_status = 'healthy. Nice job!'
-            # elif 25 <= BMI:
-            #     desired_weight_status = 'overweight.'
+            if dsrd_bmi < 18.5:
+                dsrd_weight_status = 'underweight.'
+            elif 18.5 <= dsrd_bmi < 25:
+                dsrd_weight_status = 'healthy.'
+            elif 25 <= dsrd_bmi:
+                dsrd_weight_status = 'overweight.'
 
             self.bmi = Text(100,100, f'Your current BMI is {crnt_bmi}, which is considered {weight_status}',font_size=30)
-            self.desired_bmi = Text(100,150, f'Your desired BMI is {dsrd_bmi}.',font_size=30)
+            if dsrd_weight_status == weight_status:
+                self.desired_bmi = Text(100,150, f'Your desired BMI is {dsrd_bmi}, which is also considered {dsrd_weight_status}',font_size=30)
+            else:
+                self.desired_bmi = Text(100,150, f'Your desired BMI is {dsrd_bmi}, which is considered {dsrd_weight_status}',font_size=30)
             self.maintain = Text(100,200, f'To maintain your current weight, you should consume {calory_maintain[0]} calories a day.')
             #self.loss = Text(100,200, f'To reach this ')
             self.calctexts.add(self.bmi, self.desired_bmi,self.maintain)

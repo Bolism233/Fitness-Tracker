@@ -4,7 +4,7 @@ import json
 class Userdata:
 
 
-    def __init__(self,age=0,weight=0,height=0,gender='',activity_level=0,desired_weight=0,goal=0):
+    def __init__(self,age=0,weight=0,height=0,gender='',activity_level=0,desired_weight=0,intensity=0):
         """
         Stores user information inside the user class
         param gender
@@ -22,7 +22,7 @@ class Userdata:
         self.gender = gender
         self.activity_level = activity_level
         self.desired_weight = desired_weight
-        self.goal = goal
+        self.goal = intensity
 
     
     def bmi(self,weight,filename):
@@ -89,7 +89,7 @@ class Userdata:
         return primary_goal[0], primary_goal[loss]
 
 
-    def macronutrients(self,filename):
+    def macronutrients(self,filename="macronutrients"):
         '''
         
         '''
@@ -115,3 +115,6 @@ class Userdata:
         res = json.loads(response.text)
         goals = res['data']
         return goals
+
+test = Userdata(18,60,180,"male",3,70,"mildgain")
+test.macronutrients()
