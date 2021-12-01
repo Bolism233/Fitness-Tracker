@@ -49,7 +49,7 @@ class Userdata:
             }
         
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
-        out_file = open(f'src/{self.filename}.json', 'w')
+        out_file = open(f'assets/{self.filename}.json', 'w')
         json.dump(response.json(), out_file, indent=4)
         res = json.loads(response.text)
         return res['data']['bmi']
@@ -75,7 +75,7 @@ class Userdata:
             "activitylevel":self.activity_level}
 
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
-        out_file = open(f'src/{self.filename}.json', 'w')
+        out_file = open(f'assets/{self.filename}.json', 'w')
         json.dump(response.json(), out_file, indent=4)
         res = json.loads(response.text)
         goals = res['data']['goals']
@@ -111,7 +111,7 @@ class Userdata:
         }
 
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
-        out_file = open(f'src/{self.filename}.json', 'w')
+        out_file = open(f'assets/{self.filename}.json', 'w')
         json.dump(response.json(), out_file, indent=4)
         res = json.loads(response.text)
         goals = res['data']

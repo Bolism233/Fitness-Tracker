@@ -238,51 +238,17 @@ class Controller:
             for event in pygame.event.get():
 
                 if event.type == pygame.QUIT:
-                    # #write Userdata into the json file
-                    # writer = open("src/data.json", "w")
-                    # #example
-                    # new_text = "Hello World"
-                    # writer.write(new_text)
-                    # #for result in User data, write it into the data.son
                     sys.exit()
 
-                # if event.type == pygame.MOUSEBUTTONDOWN:
-                #     # if self.start_button.rect.collidepoint(event.pos): #Check if its clicked on the buttons
-                #     #     #Save User Data
-                #     #     self.user.gender = self.textboxes.sprites()[0].user_text
-                #     #     self.user.age = self.textboxes.sprites()[2].user_text
-                #     #     self.user.weight = self.textboxes.sprites()[1].user_text
-                #     #     self.user.height = self.textboxes.sprites()[4].user_text
-                #     #     self.user.activity_level = f'level_{self.textboxes.sprites()[3].user_text}'
-                #     #     self.user.desired_weight = self.textboxes.sprites()[5].user_text
-
-                #     #     self.state = "Calculation"
-
-                #     if self.back_button.rect.collidepoint(event.pos):
-                #         self.state = "Calculation"
-                #         # self.buttons.empty()
-                #         # self.buttons.remove(self.back_button)
-
-                #     elif self.exit_button.rect.collidepoint(event.pos):
-                #         sys.exit()
-
-                #     for textbox in self.textboxes:
-                #         textbox.active = False
-                #         if textbox.input_rect.collidepoint(event.pos):
-                #             textbox.active = True
-
-                # if event.type == pygame.MOUSEMOTION:
-                #     for button in self.buttons:
-                #         if button.rect.collidepoint(event.pos) and button.status == False:
-                #             button.zoomIn()
-                #             button.status = True
-                #         if not button.rect.collidepoint(event.pos) and button.status == True:
-                #             button.zoomOut()
-                #             button.status = False
+            #if "assets/bmi" doesn't exist:
+                #run api
 
             crnt_bmi = self.user.bmi(self.user.weight,'BMI')
             dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
             calory_maintain = self.user.calories(5)
+
+            #else:
+                #just display data
 
             if crnt_bmi < 18.5:
                 weight_status = 'underweight.'
