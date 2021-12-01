@@ -22,7 +22,7 @@ class Userdata:
         self.gender = gender
         self.activity_level = activity_level
         self.desired_weight = desired_weight
-        self.goal = intensity
+        self.intensity = intensity
 
     
     def bmi(self,weight,filename):
@@ -93,6 +93,7 @@ class Userdata:
         '''
         
         '''
+
         self.url = "https://fitness-calculator.p.rapidapi.com/macrocalculator"
         self.headers = {
             'x-rapidapi-host': "fitness-calculator.p.rapidapi.com",
@@ -106,7 +107,7 @@ class Userdata:
             "height":self.height,
             "weight":self.weight,
             "activitylevel":self.activity_level,
-            "goal":self.goal
+            "goal":self.intensity
         }
 
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
@@ -116,5 +117,19 @@ class Userdata:
         goals = res['data']
         return goals
 
-test = Userdata(18,60,180,"male",3,70,"mildgain")
-test.macronutrients()
+
+    def saveData(self,control):
+        '''
+        
+        '''
+
+        self.height = control.textboxes.sprites()[0].user_text
+        self.age = control.textboxes.sprites()[1].user_text
+        self.weight = control.textboxes.sprites()[2].user_text
+        self.activity_level = f'level_{control.textboxes.sprites()[3].user_text}'
+        self.desired_weight = control.textboxes.sprites()[4].user_text
+        self.intensity = control.textboxes.sprites()[5].user_text
+        self.gender = control.textboxes.sprites()[6].user_text
+
+# test = Userdata(18,60,180,"male",3,70,"mildgain")
+# test.macronutrients()\

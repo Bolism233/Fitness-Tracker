@@ -16,10 +16,10 @@ class Controller:
         pygame.key.set_repeat(200, 100)
         self.clock = pygame.time.Clock()
         self.state = "Start"
-        
+
         #set up user object
         self.user = Userdata()
-        
+
         #set up screen
         self.width = width
         self.height = height
@@ -27,18 +27,11 @@ class Controller:
         pygame.display.set_caption("Fitness Tracker")
 
         #set up start screen text
-        self.start_title = Text(320,200,"Fitness Calculator",font_size=40)
+        self.start_title = Text(317,200,"Fitness Calculator",font_size=40)
         self.start_subtitle = Text(350,240,"By Jay, Lucas, and Sal",font_size=25)
         self.titletext = pygame.sprite.Group()
         self.titletext.add(self.start_title, self.start_subtitle)
-        
-        #set up buttons
-        self.start_button = Button(580, 400, "assets/start_btn.png", 0.25)
-        self.back_button = Button(((253+580)/2)-5,400, "assets/start_btn.png", 0.25)
-        self.exit_button = Button(253, 400, "assets/exit_btn.png", 0.25)
-        self.buttons = pygame.sprite.Group() #button sprite group
-        self.buttons.add(self.start_button, self.exit_button)
-        
+
         #set up textboxes
         self.textboxes = pygame.sprite.Group() # textbox sprite group
         num_textboxes = 3
@@ -50,12 +43,21 @@ class Controller:
             self.textboxes.add(Textbox(x, second_row_y))
             x += 200
         self.textboxes.add(Textbox(175,y+200))
-        
+
+        #set up buttons
+        self.start_button = Button(575, 400, "assets/start_btn.png", 0.25)
+        self.back_button = Button(((253+580)/2)-8,400, "assets/back_btn.png", 0.25)
+        self.exit_button = Button(240, 400, "assets/exit_btn.png", 0.25)
+        self.info_button = Button(375, y+200, "assets/info_btn.png", 0.25)
+        self.buttons = pygame.sprite.Group() #button sprite group
+        self.buttons.add(self.start_button, self.exit_button)
+
         #set up text above textboxes
         self.texts = pygame.sprite.Group()  # text sprite group
         #self.title = Text(375, 50, "Fitness Tracker", (0,0,0), 28)
         #self.texts.add(self.title)
-        categories = ["Gender", "Height (in cm)", "Age", "Weight (in kg)", "Activity Level (1-6)", "Desired Weight (in kg)","Intensity (1-3)"]
+        categories = ["Height (in cm)", "Age", "Current Weight (in kg)", "Activity Level (1-6)", "Desired Weight (in kg)", "Intensity (1-3)", "Gender"]
+        #categories = ["Gender", "Height (in cm)", "Age", "Weight (in kg)", "Activity Level (1-6)", "Desired Weight (in kg)", "Intensity (1-3)"]
         index = 0
         for textbox in self.textboxes:
             self.texts.add(Text(textbox.x, textbox.y - 25, categories[index]))
@@ -74,6 +76,9 @@ class Controller:
 
             elif self.state == "Menu":
                 self.menuloop()
+
+            elif self.state == "Info":
+                self.infoloop()
 
             elif self.state == "Calculation":
                 self.calculationloop()
@@ -113,7 +118,7 @@ class Controller:
             self.screen.fill((255, 255, 255))
 
             #drawing buttons/text
-            self.buttons.remove(self.back_button)
+            self.buttons.remove(self.back_button, self.info_button)
             self.buttons.draw(self.screen)
             # self.start_title=Text(320,200,"Fitness Calculator",font_size=40)
             # self.start_subtitle=Text(300,240,"By Jay, Lucas, and Sal",font_size=20)
@@ -130,24 +135,23 @@ class Controller:
         while self.state == "Menu":
 
             for event in pygame.event.get():
-                
+
                 if event.type == pygame.QUIT:
                     sys.exit()
-                    
+
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
                     if self.start_button.rect.collidepoint(event.pos): #Check if its clicked on the buttons
                         #Save User Data
-                        self.user.gender = self.textboxes.sprites()[0].user_text
-                        self.user.weight = self.textboxes.sprites()[3].user_text
-                        self.user.age = self.textboxes.sprites()[2].user_text
-                        self.user.activity_level = f'level_{self.textboxes.sprites()[4].user_text}'
-                        self.user.height = self.textboxes.sprites()[1].user_text
-                        self.user.desired_weight = self.textboxes.sprites()[5].user_text
+                        self.user.saveData(self)
+                        #switch to new screen
                         self.start_button.zoomOut()
                         self.state = "Calculation"
 
                     elif self.back_button.rect.collidepoint(event.pos):
+                        #Save User Data
+                        self.user.saveData(self)
+                        #switch to new screen
                         self.back_button.zoomOut()
                         self.state = "Start"
 
@@ -188,13 +192,13 @@ class Controller:
             #Set the screen for textinput
             self.screen.fill((255, 255, 255))
             #drawing buttons
-            self.buttons.add(self.back_button)
+            self.buttons.add(self.back_button,self.info_button)
             self.buttons.draw(self.screen)
-            
+
             #rendering texts above the textboxes
             for text in self.texts:
                 self.screen.blit(text.text_surface, (text.x, text.y))
-            
+
             #rendering textboxes for each
             for textbox in self.textboxes:
 
@@ -210,6 +214,21 @@ class Controller:
             #update the window at once
             pygame.display.flip()
             self.clock.tick(60)
+
+
+    def infoloop(self):
+
+        while self.state == "Info":
+
+            for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+                    sys.exit()
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+
+                    if self.back_button.rect.collidepoint(event.pos):
+                        self.state == "Menu"
 
 
     def calculationloop(self):
@@ -236,7 +255,7 @@ class Controller:
                 #     #     self.user.height = self.textboxes.sprites()[4].user_text
                 #     #     self.user.activity_level = f'level_{self.textboxes.sprites()[3].user_text}'
                 #     #     self.user.desired_weight = self.textboxes.sprites()[5].user_text
-                        
+
                 #     #     self.state = "Calculation"
 
                 #     if self.back_button.rect.collidepoint(event.pos):
@@ -264,7 +283,7 @@ class Controller:
             crnt_bmi = self.user.bmi(self.user.weight,'BMI')
             dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
             calory_maintain = self.user.calories(5)
-            
+
             if crnt_bmi < 18.5:
                 weight_status = 'underweight.'
             elif 18.5 <= crnt_bmi < 25:
@@ -291,6 +310,6 @@ class Controller:
             self.screen.fill((255, 255, 255))
             for text in self.calctexts:
                 self.screen.blit(text.text_surface, (text.x, text.y))
-            
+
             pygame.display.flip()
             self.clock.tick(60)
