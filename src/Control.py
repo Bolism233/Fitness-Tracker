@@ -50,7 +50,6 @@ class Controller:
         self.exit_button = Button(240, 400, "assets/exit_btn.png", 0.25)
         self.info_button = Button(375, y+200, "assets/info_btn.png", 0.25)
         self.buttons = pygame.sprite.Group() #button sprite group
-        self.buttons.add(self.start_button, self.exit_button)
 
         #set up text above textboxes
         self.texts = pygame.sprite.Group()  # text sprite group
@@ -115,10 +114,9 @@ class Controller:
             self.screen.fill((255, 255, 255))
 
             #drawing buttons/text
-            self.buttons.remove(self.back_button, self.info_button)
+            self.buttons.empty()
+            self.buttons.add(self.start_button, self.exit_button)
             self.buttons.draw(self.screen)
-            # self.start_title=Text(320,200,"Fitness Calculator",font_size=40)
-            # self.start_subtitle=Text(300,240,"By Jay, Lucas, and Sal",font_size=20)
             for text in self.titletext:
                 self.screen.blit(text.text_surface, (text.x, text.y))
 
@@ -195,7 +193,8 @@ class Controller:
             #Set the screen for textinput
             self.screen.fill((255, 255, 255))
             #drawing buttons
-            self.buttons.add(self.back_button,self.info_button)
+            self.buttons.empty()
+            self.buttons.add(self.start_button, self.exit_button, self.back_button, self.info_button)
             self.buttons.draw(self.screen)
 
             #rendering texts above the textboxes
@@ -246,13 +245,32 @@ class Controller:
                 if event.type == pygame.QUIT:
                     sys.exit()
 
+                if event.type == pygame.MOUSEBUTTONDOWN:
+
+                    if self.back_button.rect.collidepoint(event.pos):
+                        
+                        self.back_button.zoomOut()
+                        self.state = "Menu"
+
+                    if self.exit_button.rect.collidepoint(event.pos):
+
+                        self.exit_button.zoomOut()
+                        sys.exit()
+
+                if event.type == pygame.MOUSEMOTION:
+
+                    for button in self.buttons:
+
+                        if button.rect.collidepoint(event.pos) and button.status == False:
+                            button.zoomIn()
+                            button.status = True
+
+                        if not button.rect.collidepoint(event.pos) and button.status == True:
+                            button.zoomOut()
+                            button.status = False
+
             #if "assets/bmi" doesn't exist:
                 #run api
-
-            # crnt_bmi = self.user.bmi(self.user.weight,'BMI')
-            # dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
-            # calory_maintain = self.user.calories()[0]
-            # calory_goal = self.user.calories()[1]
 
             #else:
                 #just display data
@@ -281,8 +299,13 @@ class Controller:
             self.resultstexts.add(self.bmi, self.desired_bmi,self.maintain_text, self.goal_text)
 
             self.screen.fill((255, 255, 255))
+
             for text in self.resultstexts:
                 self.screen.blit(text.text_surface, (text.x, text.y))
+
+            self.buttons.empty()
+            self.buttons.add(self.exit_button, self.back_button)
+            self.buttons.draw(self.screen)
 
             pygame.display.flip()
             self.clock.tick(60)

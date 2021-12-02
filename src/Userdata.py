@@ -88,7 +88,7 @@ class Userdata:
         
         primary_goal = ["maintain weight", 'Mild weight loss', 'Weight loss', 'Extreme weight loss', 'Mild weight gain', 'Weight gain', 'Extreme weight gain']
         # print(self.intensity)
-        return goals["maintain weight"], goals[primary_goal[self.intensity]]["calory"]
+        return goals["maintain weight"], goals[primary_goal[int(self.intensity)]]["calory"]
 
 
     def macronutrients(self,filename="macronutrients"):
@@ -131,9 +131,5 @@ class Userdata:
         self.weight = control.textboxes.sprites()[2].user_text
         self.activity_level = control.textboxes.sprites()[3].user_text
         self.desired_weight = control.textboxes.sprites()[4].user_text
-        self.intensity = int(control.textboxes.sprites()[5].user_text)
+        self.intensity = control.textboxes.sprites()[5].user_text
         self.gender = control.textboxes.sprites()[6].user_text.lower()
-
-# test=Userdata(18,60,180,"male",2,70,1)
-# print(test.bmi())
-# print(test.calories())
