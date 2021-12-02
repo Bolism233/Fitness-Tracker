@@ -52,10 +52,11 @@ class Userdata:
         out_file = open(f'assets/{self.filename}.json', 'w')
         json.dump(response.json(), out_file, indent=4)
         res = json.loads(response.text)
+        out_file.close()
         return res['data']['bmi']
 
 
-    def calories(self,loss,filename = 'Calories'):
+    def calories(self,filename = 'Calories'):
         '''
         Determines how many calories the user should intake daily in order to gain, lose, or maintain weight based on activity level
         '''
@@ -72,21 +73,22 @@ class Userdata:
             "gender":self.gender,
             "height":self.height,
             "weight":self.weight,
-            "activitylevel":self.activity_level}
+            "activitylevel":f"level_{self.activity_level}"
+            }
 
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
         out_file = open(f'assets/{self.filename}.json', 'w')
         json.dump(response.json(), out_file, indent=4)
         res = json.loads(response.text)
+        out_file.close()
         goals = res['data']['goals']
         
-        primary_goal = \
-            [goals['maintain weight'], goals['Extreme weight loss']['calory'], \
-                goals['Weight loss']['calory'], goals['Mild weight loss']['calory'], \
-                    goals['Mild weight gain']['calory'], goals['Weight gain']['calory'], \
-                        goals['Extreme weight gain']['calory']]
-
-        return primary_goal[0], primary_goal[loss]
+        # if self.desired_weight > self.weight:
+        #     self.intensity += 1
+        
+        primary_goal = ["maintain weight", 'Mild weight loss', 'Weight loss', 'Extreme weight loss', 'Mild weight gain', 'Weight gain', 'Extreme weight gain']
+        # print(self.intensity)
+        return goals["maintain weight"], goals[primary_goal[self.intensity]]["calory"]
 
 
     def macronutrients(self,filename="macronutrients"):
@@ -107,7 +109,7 @@ class Userdata:
             "height":self.height,
             "weight":self.weight,
             "activitylevel":self.activity_level,
-            "goal":self.intensity
+            "goal":self.goal
         }
 
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
@@ -115,6 +117,7 @@ class Userdata:
         json.dump(response.json(), out_file, indent=4)
         res = json.loads(response.text)
         goals = res['data']
+        out_file.close()
         return goals
 
 
@@ -126,10 +129,11 @@ class Userdata:
         self.height = control.textboxes.sprites()[0].user_text
         self.age = control.textboxes.sprites()[1].user_text
         self.weight = control.textboxes.sprites()[2].user_text
-        self.activity_level = f'level_{control.textboxes.sprites()[3].user_text}'
+        self.activity_level = control.textboxes.sprites()[3].user_text
         self.desired_weight = control.textboxes.sprites()[4].user_text
-        self.intensity = control.textboxes.sprites()[5].user_text
-        self.gender = control.textboxes.sprites()[6].user_text
+        self.intensity = int(control.textboxes.sprites()[5].user_text)
+        self.gender = control.textboxes.sprites()[6].user_text.lower()
 
-# test = Userdata(18,60,180,"male",3,70,"mildgain")
-# test.macronutrients()\
+# test=Userdata(18,60,180,"male",2,70,1)
+# print(test.bmi())
+# print(test.calories())

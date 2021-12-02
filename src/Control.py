@@ -54,10 +54,7 @@ class Controller:
 
         #set up text above textboxes
         self.texts = pygame.sprite.Group()  # text sprite group
-        #self.title = Text(375, 50, "Fitness Tracker", (0,0,0), 28)
-        #self.texts.add(self.title)
         categories = ["Height (in cm)", "Age", "Current Weight (in kg)", "Activity Level (1-6)", "Desired Weight (in kg)", "Intensity (1-3)", "Gender"]
-        #categories = ["Gender", "Height (in cm)", "Age", "Weight (in kg)", "Activity Level (1-6)", "Desired Weight (in kg)", "Intensity (1-3)"]
         index = 0
         for textbox in self.textboxes:
             self.texts.add(Text(textbox.x, textbox.y - 25, categories[index]))
@@ -245,7 +242,9 @@ class Controller:
 
             crnt_bmi = self.user.bmi(self.user.weight,'BMI')
             dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
-            calory_maintain = self.user.calories(5)
+            calory_maintain = self.user.calories()[0]
+            # print(self.user.calories())
+            calory_goal = self.user.calories()[1]
 
             #else:
                 #just display data
@@ -269,9 +268,9 @@ class Controller:
                 self.desired_bmi = Text(100,150, f'Your desired BMI is {dsrd_bmi}, which is also considered {dsrd_weight_status}',font_size=30)
             else:
                 self.desired_bmi = Text(100,150, f'Your desired BMI is {dsrd_bmi}, which is considered {dsrd_weight_status}',font_size=30)
-            self.maintain = Text(100,200, f'To maintain your current weight, you should consume {calory_maintain[0]} calories a day.')
-            #self.loss = Text(100,200, f'To reach this ')
-            self.calctexts.add(self.bmi, self.desired_bmi,self.maintain)
+            self.maintain_text = Text(100,200, f'To maintain your current weight, you should consume {calory_maintain} calories a day.')
+            self.goal_text = Text(100,230, f'To reach your desired weight with the intensity selected, you should consume {calory_goal} calories a day. ')
+            self.calctexts.add(self.bmi, self.desired_bmi,self.maintain_text, self.goal_text)
 
             self.screen.fill((255, 255, 255))
             for text in self.calctexts:
