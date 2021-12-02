@@ -60,8 +60,8 @@ class Controller:
             self.texts.add(Text(textbox.x, textbox.y - 25, categories[index]))
             index += 1
 
-        #set up text for calculation screen
-        self.calctexts = pygame.sprite.Group()
+        #set up text for results screen
+        self.resultstexts = pygame.sprite.Group()
 
 
     def mainloop(self):
@@ -77,8 +77,8 @@ class Controller:
             elif self.state == "Info":
                 self.infoloop()
 
-            elif self.state == "Calculation":
-                self.calculationloop()
+            elif self.state == "Results":
+                self.resultsloop()
 
 
     def startloop(self):
@@ -143,7 +143,13 @@ class Controller:
                         self.user.saveData(self)
                         #switch to new screen
                         self.start_button.zoomOut()
-                        self.state = "Calculation"
+
+                        self.crnt_bmi = self.user.bmi(self.user.weight,'BMI')
+                        self.dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
+                        self.calory_maintain = self.user.calories()[0]
+                        self.calory_goal = self.user.calories()[1]
+
+                        self.state = "Results"
 
                     elif self.back_button.rect.collidepoint(event.pos):
                         #Save User Data
@@ -227,10 +233,13 @@ class Controller:
                     if self.back_button.rect.collidepoint(event.pos):
                         self.state == "Menu"
 
+            pygame.display.flip()
+            self.clock.tick(60)
 
-    def calculationloop(self):
 
-        while self.state == "Calculation":
+    def resultsloop(self):
+
+        while self.state == "Results":
 
             for event in pygame.event.get():
 
@@ -240,40 +249,39 @@ class Controller:
             #if "assets/bmi" doesn't exist:
                 #run api
 
-            crnt_bmi = self.user.bmi(self.user.weight,'BMI')
-            dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
-            calory_maintain = self.user.calories()[0]
-            # print(self.user.calories())
-            calory_goal = self.user.calories()[1]
+            # crnt_bmi = self.user.bmi(self.user.weight,'BMI')
+            # dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
+            # calory_maintain = self.user.calories()[0]
+            # calory_goal = self.user.calories()[1]
 
             #else:
                 #just display data
 
-            if crnt_bmi < 18.5:
+            if self.crnt_bmi < 18.5:
                 weight_status = 'underweight.'
-            elif 18.5 <= crnt_bmi < 25:
+            elif 18.5 <= self.crnt_bmi < 25:
                 weight_status = 'healthy.'
-            elif 25 <= crnt_bmi:
+            elif 25 <= self.crnt_bmi:
                 weight_status = 'overweight.'
 
-            if dsrd_bmi < 18.5:
+            if self.dsrd_bmi < 18.5:
                 dsrd_weight_status = 'underweight.'
-            elif 18.5 <= dsrd_bmi < 25:
+            elif 18.5 <= self.dsrd_bmi < 25:
                 dsrd_weight_status = 'healthy.'
-            elif 25 <= dsrd_bmi:
+            elif 25 <= self.dsrd_bmi:
                 dsrd_weight_status = 'overweight.'
 
-            self.bmi = Text(100,100, f'Your current BMI is {crnt_bmi}, which is considered {weight_status}',font_size=30)
+            self.bmi = Text(100,100, f'Your current BMI is {self.crnt_bmi}, which is considered {weight_status}',font_size=30)
             if dsrd_weight_status == weight_status:
-                self.desired_bmi = Text(100,150, f'Your desired BMI is {dsrd_bmi}, which is also considered {dsrd_weight_status}',font_size=30)
+                self.desired_bmi = Text(100,150, f'Your desired BMI is {self.dsrd_bmi}, which is also considered {dsrd_weight_status}',font_size=30)
             else:
-                self.desired_bmi = Text(100,150, f'Your desired BMI is {dsrd_bmi}, which is considered {dsrd_weight_status}',font_size=30)
-            self.maintain_text = Text(100,200, f'To maintain your current weight, you should consume {calory_maintain} calories a day.')
-            self.goal_text = Text(100,230, f'To reach your desired weight with the intensity selected, you should consume {calory_goal} calories a day. ')
-            self.calctexts.add(self.bmi, self.desired_bmi,self.maintain_text, self.goal_text)
+                self.desired_bmi = Text(100,150, f'Your desired BMI is {self.dsrd_bmi}, which is considered {dsrd_weight_status}',font_size=30)
+            self.maintain_text = Text(100,200, f'To maintain your current weight, you should consume {self.calory_maintain} calories a day.')
+            self.goal_text = Text(100,230, f'To reach your desired weight with the intensity selected, you should consume {self.calory_goal} calories a day. ')
+            self.resultstexts.add(self.bmi, self.desired_bmi,self.maintain_text, self.goal_text)
 
             self.screen.fill((255, 255, 255))
-            for text in self.calctexts:
+            for text in self.resultstexts:
                 self.screen.blit(text.text_surface, (text.x, text.y))
 
             pygame.display.flip()
