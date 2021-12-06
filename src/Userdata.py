@@ -24,7 +24,7 @@ class Userdata:
         self.desired_weight = desired_weight
         self.intensity = intensity
 
-    
+
     def bmi(self,weight,filename):
         '''
         Finds user's BMI and desired BMI
@@ -40,14 +40,14 @@ class Userdata:
             'x-rapidapi-host': "fitness-calculator.p.rapidapi.com",
             'x-rapidapi-key': "b00889a22bmsh3979cb9bd3fcb8dp1b279fjsn69211ab78ad7"
         }
-        
+
         self.filename = filename
         self.querystring = {
             "age":self.age,
             "weight":weight,
             "height":self.height
             }
-        
+
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
         out_file = open(f'assets/{self.filename}.json', 'w')
         json.dump(response.json(), out_file, indent=4)
@@ -82,16 +82,12 @@ class Userdata:
         res = json.loads(response.text)
         out_file.close()
         goals = res['data']['goals']
-        
-        # if self.desired_weight > self.weight:
-        #     self.intensity += 1
-        
+
         primary_goal = ["maintain weight", 'Mild weight loss', 'Weight loss', 'Extreme weight loss', 'Mild weight gain', 'Weight gain', 'Extreme weight gain']
-        # print(self.intensity)
         return goals["maintain weight"], goals[primary_goal[int(self.intensity)]]["calory"]
 
 
-    def macronutrients(self,filename="macronutrients"):
+    def macronutrients(self,filename="Macronutrients"):
         '''
         
         '''
@@ -102,6 +98,8 @@ class Userdata:
             'x-rapidapi-key': "0f022dc93emsh5eb4b83a47b9176p165de5jsn277741953564"
             }
 
+        macro_goal = ['maintain','mildlose','weightlose','extremelose','mildgain','weightgain','extremegain']
+
         self.filename = filename
         self.querystring = {
             "age":self.age,
@@ -109,7 +107,7 @@ class Userdata:
             "height":self.height,
             "weight":self.weight,
             "activitylevel":self.activity_level,
-            "goal":self.goal
+            "goal":macro_goal[self.intensity]
         }
 
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
@@ -132,4 +130,9 @@ class Userdata:
         self.activity_level = control.textboxes.sprites()[3].user_text
         self.desired_weight = control.textboxes.sprites()[4].user_text
         self.intensity = control.textboxes.sprites()[5].user_text
+        if self.intensity == '': self.intensity = 0            
+        if self.desired_weight > self.weight:
+            intensity = int(self.intensity)
+            intensity += 3
+            self.intensity = intensity
         self.gender = control.textboxes.sprites()[6].user_text.lower()

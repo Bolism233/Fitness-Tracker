@@ -1,3 +1,4 @@
+import os
 import pygame
 import sys
 from src.Button import Button
@@ -53,7 +54,16 @@ class Controller:
 
         #set up text above textboxes
         self.texts = pygame.sprite.Group()  # text sprite group
-        categories = ["Height (in cm)", "Age", "Current Weight (in kg)", "Activity Level (1-6)", "Desired Weight (in kg)", "Intensity (1-3)", "Gender"]
+        categories = [
+            "Height (in cm)",
+            "Age",
+            "Current Weight (in kg)",
+            "Activity Level (1-6)",
+            "Desired Weight (in kg)",
+            "Intensity (1-3)",
+            "Gender"
+        ]
+        
         index = 0
         for textbox in self.textboxes:
             self.texts.add(Text(textbox.x, textbox.y - 25, categories[index]))
@@ -61,6 +71,35 @@ class Controller:
 
         #set up text for results screen
         self.resultstexts = pygame.sprite.Group()
+        self.infotexts = pygame.sprite.Group()
+
+        info = [
+            '1: Burning 0 calories per day',
+            '1: Mild weight loss/gain (0.25 kg per week)',
+            '2: Little to no exercise',
+            '2: Medium weight loss/gain (0.5 kg per week)',
+            '3: Exercise 1-3 times/week',
+            '3: Extreme weight loss/gain (1 kg per week)',
+            '4: Exercise 4-5 times/week',
+            '',
+            '5: Daily exercise',
+            '',
+            '6: Intense daily exercise'
+        ]
+
+        self.infotexts.add(Text(100,80,'Activity level',font_size=28))
+        self.infotexts.add(Text(500,80,'Intensity level',font_size=28))
+        i = 0
+
+        for text in info:
+
+            if not i % 2:
+                self.infotexts.add(Text(100, 120 + (20*i), text))
+
+            else:
+                self.infotexts.add(Text(500, 120 + (20*(i-1)), text))
+
+            i += 1
 
 
     def mainloop(self):
@@ -80,6 +119,20 @@ class Controller:
                 self.resultsloop()
 
 
+    def exit(self):
+
+
+        try:
+            os.remove('assets/BMI.json')
+            os.remove('assets/Calories.json')
+            os.remove('assets/Desired BMI.json')
+            os.remove('assets/Macronutrients.json')
+            sys.exit()
+
+        except FileNotFoundError:
+            sys.exit()
+
+
     def startloop(self):
 
         while self.state == "Start":
@@ -87,7 +140,7 @@ class Controller:
             for event in pygame.event.get():
 
                 if event.type == pygame.QUIT:
-                    sys.exit()
+                    self.exit()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -96,7 +149,7 @@ class Controller:
                         self.state = "Menu"
 
                     elif self.exit_button.rect.collidepoint(event.pos):
-                        sys.exit()
+                        self.exit()
 
                 if event.type == pygame.MOUSEMOTION:
 
@@ -132,7 +185,7 @@ class Controller:
             for event in pygame.event.get():
 
                 if event.type == pygame.QUIT:
-                    sys.exit()
+                    self.exit()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -146,6 +199,11 @@ class Controller:
                         self.dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
                         self.calory_maintain = self.user.calories()[0]
                         self.calory_goal = self.user.calories()[1]
+                        self.macronutrients = self.user.macronutrients()
+
+                        # try: self.state = "Results"
+                        # except KeyError:
+                        #     print('please fill in every box')
 
                         self.state = "Results"
 
@@ -157,7 +215,14 @@ class Controller:
                         self.state = "Start"
 
                     elif self.exit_button.rect.collidepoint(event.pos):
-                        sys.exit()
+                        self.exit()
+
+                    elif self.info_button.rect.collidepoint(event.pos):
+                        #Save User Data
+                        self.user.saveData(self)
+                        #switch to new screen
+                        self.info_button.zoomOut()
+                        self.state = "Info"
 
                     for textbox in self.textboxes:
                         textbox.active = False
@@ -225,12 +290,37 @@ class Controller:
             for event in pygame.event.get():
 
                 if event.type == pygame.QUIT:
-                    sys.exit()
+                    self.exit()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
+                    if self.exit_button.rect.collidepoint(event.pos):
+                        self.exit()
+                    
                     if self.back_button.rect.collidepoint(event.pos):
-                        self.state == "Menu"
+                        self.back_button.zoomOut()
+                        self.state = "Menu"
+
+                if event.type == pygame.MOUSEMOTION:
+
+                    for button in self.buttons:
+
+                        if button.rect.collidepoint(event.pos) and button.status == False:
+                            button.zoomIn()
+                            button.status = True
+
+                        if not button.rect.collidepoint(event.pos) and button.status == True:
+                            button.zoomOut()
+                            button.status = False
+                
+            #Set the screen for textinput
+            self.screen.fill((255, 255, 255))
+            #drawing buttons
+            self.buttons.empty()
+            self.buttons.add(self.exit_button, self.back_button)
+            self.buttons.draw(self.screen)
+            for text in self.infotexts:
+                self.screen.blit(text.text_surface, (text.x, text.y))
 
             pygame.display.flip()
             self.clock.tick(60)
@@ -243,7 +333,7 @@ class Controller:
             for event in pygame.event.get():
 
                 if event.type == pygame.QUIT:
-                    sys.exit()
+                    self.exit()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -253,9 +343,7 @@ class Controller:
                         self.state = "Menu"
 
                     if self.exit_button.rect.collidepoint(event.pos):
-
-                        self.exit_button.zoomOut()
-                        sys.exit()
+                        self.exit()
 
                 if event.type == pygame.MOUSEMOTION:
 
@@ -289,14 +377,22 @@ class Controller:
             elif 25 <= self.dsrd_bmi:
                 dsrd_weight_status = 'overweight.'
 
-            self.bmi = Text(100,100, f'Your current BMI is {self.crnt_bmi}, which is considered {weight_status}',font_size=30)
+            self.bmi = Text(80,70, f'Your current BMI is {self.crnt_bmi}, which is considered {weight_status}',font_size=30)
             if dsrd_weight_status == weight_status:
-                self.desired_bmi = Text(100,150, f'Your desired BMI is {self.dsrd_bmi}, which is also considered {dsrd_weight_status}',font_size=30)
+                self.desired_bmi = Text(80,120, f'Your desired BMI is {self.dsrd_bmi}, which is also considered {dsrd_weight_status}',font_size=30)
             else:
-                self.desired_bmi = Text(100,150, f'Your desired BMI is {self.dsrd_bmi}, which is considered {dsrd_weight_status}',font_size=30)
-            self.maintain_text = Text(100,200, f'To maintain your current weight, you should consume {self.calory_maintain} calories a day.')
-            self.goal_text = Text(100,230, f'To reach your desired weight with the intensity selected, you should consume {self.calory_goal} calories a day. ')
-            self.resultstexts.add(self.bmi, self.desired_bmi,self.maintain_text, self.goal_text)
+                self.desired_bmi = Text(80,120, f'Your desired BMI is {self.dsrd_bmi}, which is considered {dsrd_weight_status}',font_size=30)
+            self.maintain_text = Text(80,180, f'To maintain your current weight, you should consume {self.calory_maintain} calories a day.')
+            self.goal_text = Text(80,210, f'To reach your desired weight with the intensity selected, you should consume {self.calory_goal} calories a day. ')
+            
+            self.macronutrients_title = Text(80, 260, "Macronutrient ratios", font_size=35)
+            self.balanced_text = Text(80,320, f'Balanced: {int(self.macronutrients["balanced"]["protein"])}g protein, {int(self.macronutrients["balanced"]["fat"])}g fat, {int(self.macronutrients["balanced"]["carbs"])}g carbs.')
+            self.lowfat_text = Text(80,350, f'Low fat: {int(self.macronutrients["lowfat"]["protein"])}g protein, {int(self.macronutrients["lowfat"]["fat"])}g fat, {int(self.macronutrients["lowfat"]["carbs"])}g carbs.')
+            self.lowcarbs_text = Text(480,320, f'Low carbs: {int(self.macronutrients["lowcarbs"]["protein"])}g protein, {int(self.macronutrients["lowcarbs"]["fat"])}g fat, {int(self.macronutrients["lowcarbs"]["carbs"])}g carbs.')
+            self.highprotein_text = Text(480,350, f'High protein: {int(self.macronutrients["highprotein"]["protein"])}g protein, {int(self.macronutrients["highprotein"]["fat"])}g fat, {int(self.macronutrients["highprotein"]["carbs"])}g carbs.')
+
+            self.resultstexts.empty()
+            self.resultstexts.add(self.bmi, self.desired_bmi,self.maintain_text, self.goal_text, self.balanced_text, self.lowfat_text, self.lowcarbs_text, self.highprotein_text, self.macronutrients_title)
 
             self.screen.fill((255, 255, 255))
 
