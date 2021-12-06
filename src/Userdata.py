@@ -107,7 +107,7 @@ class Userdata:
             "height":self.height,
             "weight":self.weight,
             "activitylevel":self.activity_level,
-            "goal":macro_goal[self.intensity]
+            "goal":macro_goal[int(self.intensity)]
         }
 
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
