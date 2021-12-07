@@ -22,8 +22,9 @@ class Userdata:
     def bmi(self,weight,filename):
         '''
         Finds user's BMI and desired BMI
-        param filename: name of json file that BMI info will be stored in
-        return: user's BMI
+        :param weight: user's weight
+        :param filename: name of json file that BMI info will be stored in
+        :return: user's BMI
         '''
         self.url = "https://fitness-calculator.p.rapidapi.com/bmi"
         self.querystring = {
@@ -38,8 +39,8 @@ class Userdata:
     def calories(self,filename = 'Calories'):
         '''
         Determines how many calories the user should intake daily in order to gain, lose, or maintain weight based on activity level
-        param filename: name of json file that calorie info will be stored in
-        return: how many calories a day the user should be eating to maintain weight and to reach their target weight
+        :param filename: name of json file that calorie info will be stored in
+        :return: how many calories a day the user should be eating to maintain weight and to reach their target weight
         '''
         self.url = "https://fitness-calculator.p.rapidapi.com/dailycalorie"
         self.filename = filename
@@ -81,7 +82,9 @@ class Userdata:
 
     def saveData(self, control):
         '''
-
+        Saves user data according to their textbox input for use by the API
+        :param control: Used to take input from textboxes
+        :return: None
         '''
         self.height = control.textboxes.sprites()[0].user_text
         self.age = control.textboxes.sprites()[1].user_text
@@ -100,7 +103,9 @@ class Userdata:
     
     def makeJson(self, filename):
         '''
-        
+        Makes json file from data returned by API for display on results screens
+        :param filename: Name of the json file used to store user results
+        :return: User results stored in json file
         '''
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
         res = response.json()

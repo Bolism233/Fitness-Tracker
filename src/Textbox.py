@@ -4,13 +4,6 @@ class Textbox(pygame.sprite.Sprite):
 
 
     def __init__(self, x, y, user_text = ''):
-        """
-        Set up textboxes, set up the font and rendering process of the user text. Set its default active status to False.
-        param x: x_coordinate
-        param y: y_coordinate
-        param user_text: User input to the textboxes
-        return: None
-        """
         pygame.sprite.Sprite.__init__(self)
         pygame.font.init()
         self.black = (0, 0 ,0)
@@ -27,8 +20,8 @@ class Textbox(pygame.sprite.Sprite):
 
     def setDefaultLen(self):
         """
-        set the default length of the texboxes
-        args: None
-        return: None
+        Set the default length of the texboxes
+        :params: None
+        :return: None
         """
         self.input_rect.w = max(140, self.text_surface.get_width() + 20)
