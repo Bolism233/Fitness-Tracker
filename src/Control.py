@@ -121,12 +121,9 @@ class Controller:
 
     def exit(self):
 
-
         try:
-            os.remove('assets/BMI.json')
-            os.remove('assets/Calories.json')
-            os.remove('assets/Desired BMI.json')
-            os.remove('assets/Macronutrients.json')
+            for i in ["BMI.json", "Calories.json", "Desired BMI.json", "Macronutrients.json"]:
+                os.remove('assets/' + i)
             sys.exit()
 
         except FileNotFoundError:
@@ -194,9 +191,8 @@ class Controller:
                         self.user.saveData(self)
                         #switch to new screen
                         self.start_button.zoomOut()
-
                         if self.user.height == '' or self.user.age == '' or self.user.weight == '' or self.user.activity_level == '' or self.user.desired_weight == '' or self.user.intensity == '' or self.user.gender == '':
-                            print('please fill in every box')
+                                print('please fill in every box')
                         else:
                             self.crnt_bmi = self.user.bmi(self.user.weight,'BMI')
                             self.dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
