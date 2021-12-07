@@ -91,6 +91,8 @@ class Controller:
         self.infotexts.add(Text(500,80,'Intensity level',font_size=28))
         i = 0
 
+        self.weight_status = 0
+
         for text in info:
 
             if not i % 2:
@@ -102,7 +104,51 @@ class Controller:
             i += 1
 
 
+    def exit(self):
+
+        '''
+        Deletes json files if there are any, then quits the program.
+        :params: None
+        :return: None
+        '''
+
+        try:
+            os.remove('assets/BMI.json')
+            os.remove('assets/Calories.json')
+            os.remove('assets/Desired BMI.json')
+            os.remove('assets/Macronutrients.json')
+            sys.exit()
+
+        except FileNotFoundError:
+            sys.exit()
+
+
+    def bmiHealth(self, bmiStatus):
+
+        '''
+        Determines whether the user's current and desired bmis are healthy or not
+        :param bmiStatus: User's current/desired BMI
+        :param wtStatus: Healthy, overweight, or underweight
+        :return: Whether user's bmi is healthy/underweight/overweight
+        '''
+
+        if bmiStatus < 18.5:
+            wtStatus = 'underweight.'
+        elif 18.5 <= bmiStatus < 25:
+            wtStatus = 'healthy.'
+        elif 25 <= bmiStatus:
+            wtStatus = 'overweight.'
+
+        return wtStatus
+
+
     def mainloop(self):
+
+        '''
+        Sets state according to user input
+        :params: None
+        :return: None
+        '''
 
         while True:
 
@@ -119,21 +165,13 @@ class Controller:
                 self.resultsloop()
 
 
-    def exit(self):
-
-
-        try:
-            os.remove('assets/BMI.json')
-            os.remove('assets/Calories.json')
-            os.remove('assets/Desired BMI.json')
-            os.remove('assets/Macronutrients.json')
-            sys.exit()
-
-        except FileNotFoundError:
-            sys.exit()
-
-
     def startloop(self):
+
+        '''
+        Displays start screen with credits and start and exit button.
+        :params: None
+        :return: None
+        '''
 
         while self.state == "Start":
 
@@ -180,6 +218,12 @@ class Controller:
 
     def menuloop(self):
 
+        '''
+        Displays screen where user can input data for the API to use to calculate BMI, calories, and macronutrient info.
+        :params: None
+        :return: None
+        '''
+
         while self.state == "Menu":
 
             for event in pygame.event.get():
@@ -196,7 +240,8 @@ class Controller:
                         self.start_button.zoomOut()
 
                         if self.user.height == '' or self.user.age == '' or self.user.weight == '' or self.user.activity_level == '' or self.user.desired_weight == '' or self.user.intensity == '' or self.user.gender == '':
-                            print('please fill in every box')
+                            error_msg = Text(self.start_button.x, self.start_button.y - 20, "Please fill in every parameter.", (255, 0, 0))
+                            self.screen.blit(error_msg.text_surface, (error_msg.x, error_msg.y))
                         else:
                             self.crnt_bmi = self.user.bmi(self.user.weight,'BMI')
                             self.dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
@@ -284,6 +329,12 @@ class Controller:
 
     def infoloop(self):
 
+        '''
+        Displays info about the params used to determine user's health
+        :params: None
+        :return: None
+        '''
+
         while self.state == "Info":
 
             for event in pygame.event.get():
@@ -327,6 +378,12 @@ class Controller:
 
     def resultsloop(self):
 
+        '''
+        Displays results returned by API and tells user whether their current/desired weights are healthy or not.
+        :params: None
+        :return: None
+        '''
+
         while self.state == "Results":
 
             for event in pygame.event.get():
@@ -356,25 +413,15 @@ class Controller:
                             button.zoomOut()
                             button.status = False
 
-            if self.crnt_bmi < 18.5:
-                weight_status = 'underweight.'
-            elif 18.5 <= self.crnt_bmi < 25:
-                weight_status = 'healthy.'
-            elif 25 <= self.crnt_bmi:
-                weight_status = 'overweight.'
-
-            if self.dsrd_bmi < 18.5:
-                dsrd_weight_status = 'underweight.'
-            elif 18.5 <= self.dsrd_bmi < 25:
-                dsrd_weight_status = 'healthy.'
-            elif 25 <= self.dsrd_bmi:
-                dsrd_weight_status = 'overweight.'
+            weight_status = self.bmiHealth(self.crnt_bmi)
+            dsrd_weight_status = self.bmiHealth(self.dsrd_bmi)
 
             self.bmi = Text(50,70, f'Your current BMI is {self.crnt_bmi}, which is considered {weight_status}',font_size=28)
             if dsrd_weight_status == weight_status:
                 self.desired_bmi = Text(50,120, f'Your desired BMI is {self.dsrd_bmi}, which is also considered {dsrd_weight_status}',font_size=28)
             else:
                 self.desired_bmi = Text(50,120, f'Your desired BMI is {self.dsrd_bmi}, which is considered {dsrd_weight_status}',font_size=28)
+            
             self.maintain_text = Text(50,180, f'To maintain your current weight, you should consume {self.calory_maintain} calories a day.')
             self.goal_text = Text(50,210, f'To reach your desired weight with the intensity selected, you should consume {self.calory_goal} calories a day. ')
             
