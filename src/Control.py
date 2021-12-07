@@ -55,12 +55,12 @@ class Controller:
         #set up text above textboxes
         self.texts = pygame.sprite.Group()  # text sprite group
         categories = [
-            "Height(in cm)",
+            "Height (in cm)",
             "Age",
-            "Current Weight(in kg)",
-            "Activity Level(1-6)",
-            "Desired Weight(in kg)",
-            "Intensity(1-3)",
+            "Current Weight (in kg)",
+            "Activity Level (1-6)",
+            "Desired Weight (in kg)",
+            "Intensity (1-3)",
             "Gender"
         ]
         
@@ -195,17 +195,16 @@ class Controller:
                         #switch to new screen
                         self.start_button.zoomOut()
 
-                        self.crnt_bmi = self.user.bmi(self.user.weight,'BMI')
-                        self.dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
-                        self.calory_maintain = self.user.calories()[0]
-                        self.calory_goal = self.user.calories()[1]
-                        self.macronutrients = self.user.macronutrients()
+                        if self.user.height == '' or self.user.age == '' or self.user.weight == '' or self.user.activity_level == '' or self.user.desired_weight == '' or self.user.intensity == '' or self.user.gender == '':
+                            print('please fill in every box')
+                        else:
+                            self.crnt_bmi = self.user.bmi(self.user.weight,'BMI')
+                            self.dsrd_bmi = self.user.bmi(self.user.desired_weight,'Desired BMI')
+                            self.calory_maintain = self.user.calories()[0]
+                            self.calory_goal = self.user.calories()[1]
+                            self.macronutrients = self.user.macronutrients()
 
-                        # try: self.state = "Results"
-                        # except KeyError:
-                        #     print('please fill in every box')
-
-                        self.state = "Results"
+                            self.state = "Results"
 
                     elif self.back_button.rect.collidepoint(event.pos):
                         #Save User Data
@@ -356,12 +355,6 @@ class Controller:
                         if not button.rect.collidepoint(event.pos) and button.status == True:
                             button.zoomOut()
                             button.status = False
-
-            #if "assets/bmi" doesn't exist:
-                #run api
-
-            #else:
-                #just display data
 
             if self.crnt_bmi < 18.5:
                 weight_status = 'underweight.'
