@@ -235,9 +235,7 @@ class Controller:
                         self.start_button.zoomOut()
 
                         if self.user.height == '' or self.user.age == '' or self.user.weight == '' or self.user.activity_level == '' or self.user.desired_weight == '' or self.user.intensity == '' or self.user.gender == '':
-                            error_msg = Text(self.start_button.x, self.start_button.y - 20,
-                                             "Please fill in every parameter.", (255, 0, 0))
-                            self.screen.blit(error_msg.text_surface, (error_msg.x, error_msg.y))
+                            print("Please fill in everybox")
                         else:
                             self.crnt_bmi = self.user.bmi(self.user.weight, 'BMI')
                             self.dsrd_bmi = self.user.bmi(self.user.desired_weight, 'Desired BMI')
