@@ -16,7 +16,7 @@ class Userdata:
             'x-rapidapi-host': "fitness-calculator.p.rapidapi.com",
             'x-rapidapi-key': "b00889a22bmsh3979cb9bd3fcb8dp1b279fjsn69211ab78ad7"
         }
-        self.state = False
+
 
 
     def bmi(self,weight,filename):
@@ -98,7 +98,7 @@ class Userdata:
             intensity += 3
             self.intensity = intensity
         self.gender = control.textboxes.sprites()[6].user_text.lower()
-        self.state = True
+
 
     
     def makeJson(self, filename):
