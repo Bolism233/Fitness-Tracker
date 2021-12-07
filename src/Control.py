@@ -66,7 +66,7 @@ class Controller:
         
         index = 0
         for textbox in self.textboxes:
-            self.texts.add(Text(textbox.x, textbox.y - 25, categories[index]))
+            self.texts.add(Text(textbox.x, textbox.y - 25, categories[index], font_size = 20))
             index += 1
 
         #set up text for results screen
@@ -377,19 +377,19 @@ class Controller:
             elif 25 <= self.dsrd_bmi:
                 dsrd_weight_status = 'overweight.'
 
-            self.bmi = Text(80,70, f'Your current BMI is {self.crnt_bmi}, which is considered {weight_status}',font_size=30)
+            self.bmi = Text(50,70, f'Your current BMI is {self.crnt_bmi}, which is considered {weight_status}',font_size=28)
             if dsrd_weight_status == weight_status:
-                self.desired_bmi = Text(80,120, f'Your desired BMI is {self.dsrd_bmi}, which is also considered {dsrd_weight_status}',font_size=30)
+                self.desired_bmi = Text(50,120, f'Your desired BMI is {self.dsrd_bmi}, which is also considered {dsrd_weight_status}',font_size=28)
             else:
-                self.desired_bmi = Text(80,120, f'Your desired BMI is {self.dsrd_bmi}, which is considered {dsrd_weight_status}',font_size=30)
-            self.maintain_text = Text(80,180, f'To maintain your current weight, you should consume {self.calory_maintain} calories a day.')
-            self.goal_text = Text(80,210, f'To reach your desired weight with the intensity selected, you should consume {self.calory_goal} calories a day. ')
+                self.desired_bmi = Text(50,120, f'Your desired BMI is {self.dsrd_bmi}, which is considered {dsrd_weight_status}',font_size=28)
+            self.maintain_text = Text(50,180, f'To maintain your current weight, you should consume {self.calory_maintain} calories a day.')
+            self.goal_text = Text(50,210, f'To reach your desired weight with the intensity selected, you should consume {self.calory_goal} calories a day. ')
             
-            self.macronutrients_title = Text(80, 260, "Macronutrient ratios", font_size=35)
-            self.balanced_text = Text(80,320, f'Balanced: {int(self.macronutrients["balanced"]["protein"])}g protein, {int(self.macronutrients["balanced"]["fat"])}g fat, {int(self.macronutrients["balanced"]["carbs"])}g carbs.')
-            self.lowfat_text = Text(80,350, f'Low fat: {int(self.macronutrients["lowfat"]["protein"])}g protein, {int(self.macronutrients["lowfat"]["fat"])}g fat, {int(self.macronutrients["lowfat"]["carbs"])}g carbs.')
-            self.lowcarbs_text = Text(480,320, f'Low carbs: {int(self.macronutrients["lowcarbs"]["protein"])}g protein, {int(self.macronutrients["lowcarbs"]["fat"])}g fat, {int(self.macronutrients["lowcarbs"]["carbs"])}g carbs.')
-            self.highprotein_text = Text(480,350, f'High protein: {int(self.macronutrients["highprotein"]["protein"])}g protein, {int(self.macronutrients["highprotein"]["fat"])}g fat, {int(self.macronutrients["highprotein"]["carbs"])}g carbs.')
+            self.macronutrients_title = Text(50, 260, "Macronutrient ratios", font_size=28)
+            self.balanced_text = Text(50,320, f'Balanced: {int(self.macronutrients["balanced"]["protein"])}g protein, {int(self.macronutrients["balanced"]["fat"])}g fat, {int(self.macronutrients["balanced"]["carbs"])}g carbs.')
+            self.lowfat_text = Text(50,350, f'Low fat: {int(self.macronutrients["lowfat"]["protein"])}g protein, {int(self.macronutrients["lowfat"]["fat"])}g fat, {int(self.macronutrients["lowfat"]["carbs"])}g carbs.')
+            self.lowcarbs_text = Text(450,320, f'Low carbs: {int(self.macronutrients["lowcarbs"]["protein"])}g protein, {int(self.macronutrients["lowcarbs"]["fat"])}g fat, {int(self.macronutrients["lowcarbs"]["carbs"])}g carbs.')
+            self.highprotein_text = Text(450,350, f'High protein: {int(self.macronutrients["highprotein"]["protein"])}g protein, {int(self.macronutrients["highprotein"]["fat"])}g fat, {int(self.macronutrients["highprotein"]["carbs"])}g carbs.')
 
             self.resultstexts.empty()
             self.resultstexts.add(self.bmi, self.desired_bmi,self.maintain_text, self.goal_text, self.balanced_text, self.lowfat_text, self.lowcarbs_text, self.highprotein_text, self.macronutrients_title)
