@@ -7,15 +7,15 @@ class Userdata:
     def __init__(self,age=0,weight=0,height=0,gender='',activity_level=0,desired_weight=0,intensity=0):
         """
         Stores user information inside the user class
-        param gender
-        param age
-        param weight
-        param height
-        param desired_weight
-        param activity_level
+        param gender: user gender input
+        param age: age input
+        param weight: user weight input
+        param height: user height input
+        param desired_weight: user desired_weight input
+        param activity_level: user desired_level input
+        param intensity: user intensity input
         return: None
         """
-
         self.age = age
         self.weight = weight
         self.height = height
@@ -23,35 +23,29 @@ class Userdata:
         self.activity_level = activity_level
         self.desired_weight = desired_weight
         self.intensity = intensity
-
-
-    def bmi(self,weight,filename):
-        '''
-        Finds user's BMI and desired BMI
-        param age: age
-        param weight: weight
-        param height: height
-        param filename: name of json file that BMI info will be stored in
-        return: user's BMI
-        '''
-
-        self.url = "https://fitness-calculator.p.rapidapi.com/bmi"
+        self.url = "https://fitness-calculator.p.rapidapi.com/"
         self.headers = {
             'x-rapidapi-host': "fitness-calculator.p.rapidapi.com",
             'x-rapidapi-key': "b00889a22bmsh3979cb9bd3fcb8dp1b279fjsn69211ab78ad7"
         }
 
+    def bmi(self,weight,filename):
+        '''
+        Finds user's BMI and desired BMI
+        param filename: name of json file that BMI info will be stored in
+        return: user's BMI
+        '''
+        self.url = "https://fitness-calculator.p.rapidapi.com/bmi"
         self.filename = filename
         self.querystring = {
             "age":self.age,
             "weight":weight,
             "height":self.height
             }
-
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
+        res = response.json()
         out_file = open(f'assets/{self.filename}.json', 'w')
-        json.dump(response.json(), out_file, indent=4)
-        res = json.loads(response.text)
+        json.dump(res, out_file, indent=4)
         out_file.close()
         return res['data']['bmi']
 
@@ -59,14 +53,10 @@ class Userdata:
     def calories(self,filename = 'Calories'):
         '''
         Determines how many calories the user should intake daily in order to gain, lose, or maintain weight based on activity level
+        param filename: name of json file that calorie info will be stored in
+        return: how many calories a day the user should be eating to maintain weight and to reach their target weight
         '''
-
         self.url = "https://fitness-calculator.p.rapidapi.com/dailycalorie"
-        self.headers = {
-            'x-rapidapi-host': "fitness-calculator.p.rapidapi.com",
-            'x-rapidapi-key': "0f022dc93emsh5eb4b83a47b9176p165de5jsn277741953564"
-            }
-
         self.filename = filename
         self.querystring = {
             "age":self.age,
@@ -77,9 +67,9 @@ class Userdata:
             }
 
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
+        res = response.json()
         out_file = open(f'assets/{self.filename}.json', 'w')
-        json.dump(response.json(), out_file, indent=4)
-        res = json.loads(response.text)
+        json.dump(res, out_file, indent=4)
         out_file.close()
         goals = res['data']['goals']
 
@@ -88,16 +78,12 @@ class Userdata:
 
 
     def macronutrients(self,filename="Macronutrients"):
-        '''
-        
-        '''
-
+        """
+        Determines the optimal ratios of macronutrients that the user should consume, and generates 4 different plans.
+        :param filename: name of the file that will be created that holds all the macronutrient data
+        :return: 4 plans with different ratios of macronutrients.
+        """
         self.url = "https://fitness-calculator.p.rapidapi.com/macrocalculator"
-        self.headers = {
-            'x-rapidapi-host': "fitness-calculator.p.rapidapi.com",
-            'x-rapidapi-key': "0f022dc93emsh5eb4b83a47b9176p165de5jsn277741953564"
-            }
-
         macro_goal = ['maintain','mildlose','weightlose','extremelose','mildgain','weightgain','extremegain']
 
         self.filename = filename
@@ -111,9 +97,9 @@ class Userdata:
         }
 
         response = requests.get(self.url, headers=self.headers, params=self.querystring)
+        res = response.json()
         out_file = open(f'assets/{self.filename}.json', 'w')
-        json.dump(response.json(), out_file, indent=4)
-        res = json.loads(response.text)
+        json.dump(res, out_file, indent=4)
         goals = res['data']
         out_file.close()
         return goals
@@ -121,9 +107,8 @@ class Userdata:
 
     def saveData(self,control):
         '''
-        
-        '''
 
+        '''
         self.height = control.textboxes.sprites()[0].user_text
         self.age = control.textboxes.sprites()[1].user_text
         self.weight = control.textboxes.sprites()[2].user_text

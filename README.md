@@ -5,9 +5,9 @@
 ### Fall, 2021
 ### [Assignment Description](https://docs.google.com/document/d/1H4R6yLL7som1lglyXWZ04RvTp_RvRFCCBn6sqv-82ps/edit#)
 
-<< [https://github.com/<repo>](#) >>
+ [https://github.com/bucs110a0fall21/final-project-average-python-enjoyers.git](#) 
 
-<< [link to demo presentation slides](#) >>
+ [https://docs.google.com/presentation/d/1rnbXS_-Nn0t2mkMVO9ry_y94jpxexDB1ny-qKlo7mpM/edit?usp=sharing](#) 
 
 ### Team: Average Python Enjoyers
 #### Salmaan, Lucas, Shijun
