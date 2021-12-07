@@ -3,7 +3,7 @@ import pygame
 class Text(pygame.sprite.Sprite):
 
     
-    def __init__(self, x, y, text, color = (0, 0, 0) , font_size = 22):
+    def __init__(self, x, y, text, color = (0, 0, 0) , font_size = 18):
         """
         Set up the texts displayed in the app
         param x: x coordinate of the text
