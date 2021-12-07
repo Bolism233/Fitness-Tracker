@@ -55,18 +55,18 @@ class Controller:
         #set up text above textboxes
         self.texts = pygame.sprite.Group()  # text sprite group
         categories = [
-            "Height (in cm)",
+            "Height(in cm)",
             "Age",
-            "Current Weight (in kg)",
-            "Activity Level (1-6)",
-            "Desired Weight (in kg)",
-            "Intensity (1-3)",
+            "Current Weight(in kg)",
+            "Activity Level(1-6)",
+            "Desired Weight(in kg)",
+            "Intensity(1-3)",
             "Gender"
         ]
         
         index = 0
         for textbox in self.textboxes:
-            self.texts.add(Text(textbox.x, textbox.y - 25, categories[index], font_size = 20))
+            self.texts.add(Text(textbox.x, textbox.y - 25, categories[index], font_size = 19))
             index += 1
 
         #set up text for results screen
