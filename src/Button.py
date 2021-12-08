@@ -5,7 +5,6 @@ class Button(pygame.sprite.Sprite):
 
     def __init__(self, x, y, img_file, scale):
 
-        
         pygame.sprite.Sprite.__init__(self)
         #scale the image
         self.scale = scale

@@ -5,9 +5,9 @@
 ### Fall, 2021
 ### [Assignment Description](https://docs.google.com/document/d/1H4R6yLL7som1lglyXWZ04RvTp_RvRFCCBn6sqv-82ps/edit#)
 
- [https://github.com/bucs110a0fall21/final-project-average-python-enjoyers.git](#) 
+ Github link: https://github.com/bucs110a0fall21/final-project-average-python-enjoyers.git
 
- [https://docs.google.com/presentation/d/1rnbXS_-Nn0t2mkMVO9ry_y94jpxexDB1ny-qKlo7mpM/edit?usp=sharing](#) 
+ Presentation link: https://docs.google.com/presentation/d/1rnbXS_-Nn0t2mkMVO9ry_y94jpxexDB1ny-qKlo7mpM/edit?usp=sharing 
 
 ### Team: Average Python Enjoyers
 #### Salmaan, Lucas, Shijun
@@ -32,21 +32,19 @@ eating along with the macronutrient percentages to reach that weight and body fa
 
 ## Program Design *(Backend Specialist)*
 * Non-Standard libraries
-    * << You should have a list of any additional libraries or modules used (pygame, request) beyond non-standard python. >>
-    * For each additional module you should include
-        * url for the module documentation
-        * a short description of the module
-        * requests https://docs.python-requests.org/en/latest/ Requests allows you to send HTTP/1.1 requests extremely easily
-        * sys https://docs.python.org/3/library/sys.html This module provides access to some variables used or maintained 
-      by the interpreter and to functions that interact strongly with the interpreter.
+  * pygame https://www.pygame.org/docs/ A program that is often used to make games. But we used it to display our application.
+  * requests https://docs.python-requests.org/en/latest/ Requests allows you to send HTTP/1.1 requests extremely easily
 * Class Interface Design
-    * << A simple drawing that shows the class relationships in your code (see below for an example). >>
-        * Classes for GUI (main page)
-          ![class diagram](assets/classes.jpg)
+  *  Classes for main page
+    ![class diagram](assets/mainpage_Classe.jpg)
         
-    * This does not need to be overly detailed, but should show how your code fits into the Model/View/Controller paradigm.
+  * This does not need to be overly detailed, but should show how your code fits into the Model/View/Controller paradigm.
 * Classes
-    * Classes: Textboxes, Buttons, Texts, Userdata
+    * Classes: 
+      * Textbox: Sets up Textboxes on the screen, save user input and render them on the screen.
+      * Button: Sets up Buttons on the screen. It has methods to zoom in and zoom out when mouse interact with it. Once certain button is clicked, the state of the Controller class changes.
+      * Text: Sets up Texts on the screen. Gives user instructions of what to input for each textbox, displays information and fitness results.
+      * Userdata: saves user information, pass them to api and return fitness information caculated by api. 
 
 ## Project Structure *(Software Lead)*
 
@@ -94,7 +92,9 @@ The Project is broken down into the following file structure:
 |  8  | Repeat step 4, this time navigating the cursor to the textbox labelled “Weight” and entering your weight using the keyboard.   | The text box should hold the value  |          |
 |  9  | Repeat step 4, this time navigating the cursor to the textbox labelled “Desired Weight” and entering your desired weight using the keyboard.  | The text box should hold the value  |          |
 |  10  | Repeat step 4, this time navigating the cursor to the textbox labelled “Intensity” and entering your intensity using the keyboard. | The text box should hold the value  |          | 
-  |  11  | Click the “Next” button  | The screen should change to a new screen that displays the user’s current BMI scale score, and the projected BMI scale score based on the user’s desired weight, whether or not the current and projected BMI of the desired weight is in a healthy range(If the BMI’s are healthy it should tell the user how many calories they would need to eat to reach their desired weight, as well as the macronutrients ratio they should be eating in).|          |
-|  12  | Navigate cursor to the x button on the top right, and left click  | The program should stop functioning.   |          |
-|  13  | Repeat step 1 and then navigate cursor to the exit button and | The program should open a window, and then stop functioning.|          |
-etc...
+|  11  | Navigate the cursor to the text box titled "Click here for more info!" and left click on it.  | The screen should change to a screen that displays information about the values the user should enter for "Activity level" and "Intensity"  |          |
+|  12  | Navigate cursor to the back button and left click on it.  | The screen should change to the previous screen that had the textboxes on it |          |
+|  13  | Click the “Next” button  | The screen should change to a new screen that displays the user’s current BMI scale score, and the projected BMI scale score based on the user’s desired weight, whether or not the current and projected BMI of the desired weight is in a healthy range(If the BMI’s are healthy it should tell the user how many calories they would need to eat to reach their desired weight, as well as the macronutrients ratio they should be eating in).|          |
+|  14  | Repeat step 13  | The screen should change to the previous screen with the user info.   |          |
+|  15  | Repeat step 14  | The screen should change to the title screen.   |          |
+|  16  |Navigate cursor to the exit button and left click on it. | The window should dissapear and the program should stop functioning.|          |
