@@ -50,8 +50,10 @@ class Controller:
         self.back_button = Button(((253 + 580) / 2) - 8, 400, "assets/back_btn.png", 0.25)
         self.exit_button = Button(240, 400, "assets/exit_btn.png", 0.25)
         self.info_button = Button(375, y + 200, "assets/info_btn.png", 0.25)
+        self.kg_button = Button(x, y, "assets/kg.png, 0.25")
+        self.lb_button = Button(x, y, "assets/lb.png, 0.25")
         self.buttons = pygame.sprite.Group()  # button sprite group
-
+        self.weightbuttons = pygame.sprite.Group().add(self.kg_button, self.lb_button)
         # set up text above textboxes
         self.texts = pygame.sprite.Group()  # text sprite group
         categories = [
@@ -59,7 +61,7 @@ class Controller:
             "Age",
             "Current Weight (in kg)",
             "Activity Level (1-6)",
-            "Desired Weight (in kg)",
+            "Desired Weight (kg/lbs)",
             "Intensity (1-3)",
             "Gender"
         ]
